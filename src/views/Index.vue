@@ -137,7 +137,7 @@
     export default {
         name: "index",
         data(){
-            this.tools.requests("http://127.0.0.1:2333/api/v1/shop/search?key=%E5%B0%8F",{},"get").then((response)=>{
+            this.tools.requests(this.G.SERVER+"/api/v1/shop/search?key=%E5%B0%8F",{},"get").then((response)=>{
                 console.log(response)
             })
 
