@@ -76,13 +76,16 @@ html table {
         float: right;
         width: 100px;
         height: 40px;
-        background: #424242;
-        position: relative; }
+        background: #ff6700;
+        position: relative;
+      }
         .head_box #head_wrap #head_right #head_car a:hover {
-          text-decoration: none; }
+          text-decoration: none;
+        }
         .head_box #head_wrap #head_right #head_car #car_content {
           position: absolute;
-          margin-left: -200px; }
+          margin-left: -229px;
+        }
 
 #main_head_box {
   width: 100%;

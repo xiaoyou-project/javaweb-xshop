@@ -3,7 +3,7 @@
     <div class="head_box">
       <div id="head_wrap">
         <div id="head_nav">
-          <a class="head_nav_a" href="/">主页</a>
+          <router-link class="head_nav_a" to="/">主页</router-link>
           <div v-for="item in topLink" :key="item">
             <span>|</span>
             <a class="head_nav_a" target="_blank" :href="item.url">{{ item.name }}</a>
@@ -11,17 +11,51 @@
         </div>
         <div id="head_right">
           <div id="head_landing">
-            <a class="head_nav_a">登陆</a>
+            <router-link to="/login" class="head_nav_a">登陆</router-link>
             <span>|</span>
-            <a class="head_nav_a">注册</a>
+            <router-link to="/register" class="head_nav_a">注册</router-link>
           </div>
           <div id="head_car">
-            <a class="head_car_text">购物车（0）</a>
-            <div id="car_content" style="height: 0px;width:0px ;background-color: #edffc6;z-index: 999">
-              <a class="car_text"></a>
+            <router-link to="/shoppingCart" class="head_car_text">购物车（0）</router-link>
+            <div id="car_content" style="height: 0px;width:0px;z-index: 999;display: none">
+                <div class="shop-list">
+                    <div class="shop-item">
+                        <img src="https://cdn.cnbj0.fds.api.mi-img.com/b2c-shopapi-pms/pms_1587873628.89959326.jpg?width=60&height=60">
+                        <div class="shop-title">小米10青春版 8GB+128GB 蓝莓薄荷</div>
+                        <div class="shop-title">2499元 × 1</div>
+                    </div>
+                </div>
+                <div class="shop-bottom">
+                    <div class="bottom-left">
+                        <div class="shop-num">共一件商品</div>
+                        <div class="shop-price">2499</div>
+                    </div>
+                    <div class="bottom-right">
+                        <div class="bottom-sum">去购物结算</div>
+                    </div>
+                </div>
             </div>
           </div>
         </div>
+      </div>
+    </div>
+    <div id="main_head_box">
+      <div id="menu_wrap">
+          <div id="menu_logo">
+              <img style="width:45px;height:45px" src="img/logo.png">
+              <img class="img-top-ad" src="img/top.gif">
+          </div>
+          <div id="menu_nav">
+              <ul>
+                  <li v-for="item in topSecondLink" :key="item" class="menu_li"><a :href="item.url">{{item.name}}</a></li>
+              </ul>
+          </div>
+          <div id="find_wrap">
+              <div id="find_bar">
+                  <input type="text" id="find_input">
+              </div>
+              <div id="find_but">GO</div>
+          </div>
       </div>
     </div>
     <router-view/>
@@ -95,17 +129,51 @@
 </template>
 <style src="./assets/css/xiaomi.css" scoped />
 <script>
+  import $ from "jquery";
   export default {
     name: "index",
     data() {
-      const topLink =[
-        {name: "博客",url: "https://xiaoyou66.com"},
-        {name: "github",url: "https://github.com/xiaoyou66"},
-        {name: "B站",url: "https://space.bilibili.com/343147393"},
-      ]
+        const topLink =[
+            {name: "博客",url: "https://xiaoyou66.com"},
+            {name: "github",url: "https://github.com/xiaoyou66"},
+            {name: "B站",url: "https://space.bilibili.com/343147393"},
+        ]
+        const topSecondLink = [
+            {name: "小米手机",url: "https://xiaoyou66.com"},
+            {name: "红米手机",url: "https://xiaoyou66.com"},
+            {name: "小米平板",url: "https://xiaoyou66.com"},
+            {name: "小米电视",url: "https://xiaoyou66.com"},
+            {name: "小米路由器",url: "https://xiaoyou66.com"},
+            {name: "小米硬件",url: "https://xiaoyou66.com"},
+            {name: "服务",url: "https://xiaoyou66.com"},
+            {name: "社区",url: "https://xiaoyou66.com"},
+        ]
       return{
-        topLink
+        topLink,
+          topSecondLink
       }
+    },
+    mounted() {
+      //搜索框失去和获取焦点border颜色改变
+      $("#find_input").focus(function(){
+          $("#find_wrap").css("border","1px solid #ff6700");
+          $("#find_but").css("border-left","1px solid #ff6700");
+      })
+      $("#find_input").blur(function(){
+          $("#find_wrap").css("border","1px solid #F0F0F0");
+          $("#find_but").css("border-left","1px solid #F0F0F0");
+      })
+      //搜索按钮的背景颜色改变
+      $("#find_but").hover(function(){
+          $(this).css({"background":"#ff6700",color:"#fff"});
+      },function(){
+          $(this).css({"background":"#fff",color:"#424242"});
+      })
+        $(".foot_bottom_r").children("span").hover(function(){
+            $(this).css({"background":"#ff6700",color:"#fff"});
+        },function(){
+            $(this).css({"background":"none",color:"#ff6700"});
+        })
     }
   }
 </script>
@@ -115,9 +183,63 @@
   }
 </style>
 <style scoped>
-  #head_landing .head_nav_a {
-    margin: 6px;
-  }
+    #car_content{
+        box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 10px;
+        display: table;
+    }
+    a.head_car_text {
+        color: #ffffff;
+    }
+    .bottom-left {
+        line-height: 20px;
+    }
+    .shop-item img {
+        width: 60px;
+        height: 60px;
+        padding: 8px;
+    }
+    .shop-list {
+        position: relative;
+        background: #ffffff;
+        width: 316px;
+    }
+    .shop-item {
+        display: flex;
+        align-items: center;
+    }
+    .shop-item img{
+        width: 60px;
+        height: 60px;
+        padding: 8px;
+    }
+    .shop-num {
+        font-size: 12px;
+    }
+    .shop-price {
+        color: #ff6700;
+        font-size: 20px;
+    }
+    .bottom-sum {
+        background: #ff6700;
+        color: #ffffff;
+        width: 132px;
+        height: 40px;
+        margin-left: 70px;
+    }
+    .shop-bottom {
+        background: #fafafa;
+        width: 316px;
+        display: flex;
+        justify-content: center;
+        padding: 7px;
+    }
+    .shop-title {
+        line-height: 22px;
+    }
+      #head_landing .head_nav_a {
+        margin: 6px;
+          color: #b0b0b0;
+      }
   /*底部服务*/
   .footer-service {
     height: 20px;
@@ -132,7 +254,6 @@
   .list-service li:first-child {
     border-left: 0;
   }
-
   .list-service li {
     float: left;
     width: 19.8%;
@@ -153,5 +274,12 @@
   .list-service a:hover{
     color: #FF6700;
     text-decoration: none;
+  }
+  li.menu_li a {
+      color: #333;
+  }
+  li.menu_li a:hover{
+      color: #FF6700;
+      text-decoration: none;
   }
 </style>

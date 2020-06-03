@@ -19,8 +19,9 @@
                                 <div class="portal-main clearfix">
                                     <div class="user-card">
                                         <h2 class="username">小游</h2>
-                                        <p class="tip">晚上好～</p>
+                                        <p class="tip">个性签名</p>
                                         <a href="//account.xiaomi.com/pass/userInfo" target="_blank" class="link">修改个人信息 &gt;</a>
+                                        <a href="//account.xiaomi.com/pass/userInfo" target="_blank" class="link">修改密码 &gt;</a>
                                         <img src="https://cdn.cnbj1.fds.api.mi-img.com/user-avatar/p01qGYayC5dk/UsSbkaQiQuJU5l.jpg" width="150" height="150" alt="小游" class="avatar">
                                     </div>
                                     <div class="user-actions">
@@ -189,6 +190,8 @@
         height: 160px;
         padding-left: 180px;
         padding-top: 40px;
+        display: flex;
+        flex-direction: column;
     }
     .portal-content-box .user-card .username{
         margin: 0;
