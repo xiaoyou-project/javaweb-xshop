@@ -11,9 +11,23 @@
         </div>
         <div id="head_right">
           <div id="head_landing">
-            <router-link to="/login" class="head_nav_a">登陆</router-link>
-            <span>|</span>
-            <router-link to="/register" class="head_nav_a">注册</router-link>
+              <div v-show="!isLogin">
+                  <router-link to="/login" class="head_nav_a">登陆</router-link>
+                  <span>|</span>
+                  <router-link to="/register" class="head_nav_a">注册</router-link>
+              </div>
+              <div class="login-name" v-show="isLogin">
+                  <div class="login-nickname"><div>{{nickname}}</div><v-icon name="chevron-down"/></div>
+                  <div id="J_userMenuWrapper" class="user-menu-wrapper">
+                      <ul class="user-menu">
+                          <li><router-link rel="nofollow" to="/me">个人中心</router-link></li>
+                          <li><a rel="nofollow" href="javascript:void(0)">评价晒单</a></li>
+                          <li><a rel="nofollow" href="javascript:void(0)">我的喜欢</a></li>
+                          <li><a rel="nofollow" href="javascript:void(0)">小米账户</a></li>
+                          <li><a rel="nofollow" href="javascript:void(0)">退出登录</a></li>
+                      </ul>
+                  </div>
+              </div>
           </div>
           <div id="head_car">
             <router-link to="/shoppingCart" class="head_car_text">购物车（0）</router-link>
@@ -139,21 +153,34 @@
             {name: "B站",url: "https://space.bilibili.com/343147393"},
         ]
         const topSecondLink = [
-            {name: "小米手机",url: "https://xiaoyou66.com"},
-            {name: "红米手机",url: "https://xiaoyou66.com"},
-            {name: "小米平板",url: "https://xiaoyou66.com"},
-            {name: "小米电视",url: "https://xiaoyou66.com"},
-            {name: "小米路由器",url: "https://xiaoyou66.com"},
-            {name: "小米硬件",url: "https://xiaoyou66.com"},
-            {name: "服务",url: "https://xiaoyou66.com"},
-            {name: "社区",url: "https://xiaoyou66.com"},
+            {name: "小米手机",url: ""},
+            {name: "Redmi 红米",url: ""},
+            {name: "电视",url: ""},
+            {name: "笔记本",url: ""},
+            {name: "家电",url: ""},
+            {name: "笔记本",url: ""},
+            {name: "家电",url: ""},
+            {name: "智能硬件",url: ""},
         ]
       return{
-        topLink,
-          topSecondLink
+          topLink,
+          topSecondLink,
+          isLogin:false,
+          nickname:""
       }
     },
-    mounted() {
+      mounted() {
+          //获取cookie
+          const data ={
+              userID: this.getCookie("userID"),
+              token: this.getCookie("token")
+          }
+          this.tools.requests(this.G.SERVER+"/api/v1/user/getInfo",data,"get").then((response)=> {
+              if(response!=null && response.code===1){
+                  this.isLogin = true
+                  this.nickname = response.data.nickname
+              }
+          })
       //搜索框失去和获取焦点border颜色改变
       $("#find_input").focus(function(){
           $("#find_wrap").css("border","1px solid #ff6700");
@@ -182,7 +209,72 @@
     margin: 0;
   }
 </style>
-<style scoped>
+<style scoped lang="scss">
+    .login-name{
+        position: relative;
+        .login-nickname {
+            margin-right: 10px;
+            display: flex;
+            align-items:center;
+            width: 110px;
+            justify-content: center;
+        }
+        .login-nickname div {
+            margin-right: 13px;
+        }
+        .user-menu-wrapper {
+            background: #fff;
+            position: absolute;
+            display: none;
+            top: 40px;
+            z-index: 3;
+            overflow: hidden;
+            -webkit-transition: height .3s;
+            transition: height .3s;
+            -webkit-box-shadow: 0 2px 1px 0 rgba(0, 0, 0, .15);
+            box-shadow: 0 2px 2px rgba(0, 0, 0, .15);
+        }
+        .user-menu li{
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .user-menu {
+            width: 110px;
+            margin: 0;
+            padding: 7px 0;
+            list-style-type: none;
+        }
+        .user-menu a{
+            color:#b0b0b0;
+        }
+        .user-menu li:hover{
+            background: #f5f5f5;
+        }
+        .user-menu li:hover a{
+            color: #FF6700!important;
+        }
+    }
+    .login-name:hover .login-nickname{
+        color: #FF6700;
+        background: #fff;
+    }
+    .login-name:hover .user-menu-wrapper{
+        display: block;
+    }
+
+    .site-topbar .user-menu a {
+        display: block;
+        padding: 3px 30px;
+        line-height: 2;
+    }
+    .site-topbar a {
+        color: #b0b0b0;
+        line-height: 40px;
+        display: inline-block;
+    }
+
     #car_content{
         box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 10px;
         display: table;

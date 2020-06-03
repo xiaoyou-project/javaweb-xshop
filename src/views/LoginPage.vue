@@ -51,16 +51,17 @@
                     console.log("登录账号", valid, this.ruleForm)
                     if (valid) {
                         this.tools.requests(this.G.SERVER +"/api/v1/user/login" ,this.ruleForm,"post").then((res) => {
-                            if(res.code == 0){
+                            if(res.code === 0){
                                 this.$message({
                                     showClose: true,
                                     message: res.msg,
                                     type: 'error'
                                 });
                             }else { // 登录成功
-                                this.setCookie('token', res.data.token, 1); // 设置cookie
-                                console.log("后端的cookie", res.data.token)
-                                console.log("cookie", this.getCookie('token'))
+                                this.setCookie('token',res.data.token, 1); // 设置cookie
+                                this.setCookie('userID',res.data.id, 1); // 设置cookie
+                                // console.log("后端的cookie", res.data)
+                                // console.log("cookie", this.getCookie('token'))
                                 this.$router.push({path: '/'}) // 跳转到主页
                             }
                         })

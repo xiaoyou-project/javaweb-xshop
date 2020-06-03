@@ -4,10 +4,38 @@
             <div class="row">
                 <div class="span4">
                     <div id="J_userMenu" class="user-address-menu">
-                        <div class="menu-box" v-for="item in leftFunction" :key="item">
-                            <h3 class="title">{{item.name}}</h3>
+                        <div class="menu-box">
+                            <h3 class="title">订单中心</h3>
                             <ul class="list">
-                                <li v-for="item2 in item.child" :key="item2"><a :href="item2.url">{{item2.name}}</a></li>
+                                <li><a class="side-link" href="javascript:void(0)">我的订单</a></li>
+                                <li><a class="side-link" href="javascript:void(0)">评价晒单</a></li>
+                                <li><a class="side-link" href="javascript:void(0)">话费充值订单</a></li>
+                                <li><a class="side-link" href="javascript:void(0)">以旧换新订单</a></li>
+                            </ul>
+                        </div>
+                        <div class="menu-box">
+                            <h3 class="title">个人中心</h3>
+                            <ul class="list">
+                                <li><a class="side-link" href="javascript:void(0)">服务记录</a></li>
+                                <li><a class="side-link" href="javascript:void(0)">申请服务</a></li>
+                                <li><a class="side-link" href="javascript:void(0)">收货地址</a></li>
+                                <li><a class="side-link" href="javascript:void(0)">领取快递报销</a></li>
+                            </ul>
+                        </div>
+                        <div class="menu-box">
+                            <h3 class="title">账户管理</h3>
+                            <ul class="list">
+                                <li><a class="side-link" href="javascript:void(0)">个人信息</a></li>
+                                <li><a class="side-link" href="javascript:void(0)">申请服务</a></li>
+                                <li><a class="side-link" href="javascript:void(0)">收货地址</a></li>
+                                <li><a class="side-link" href="javascript:void(0)">领取快递报销</a></li>
+                            </ul>
+                        </div>
+                        <div class="menu-box">
+                            <h3 class="title">售后服务</h3>
+                            <ul class="list">
+                                <li><a class="side-link" href="javascript:void(0)">我的个人中心</a></li>
+                                <li><a @click="changePasswordDialog=true" class="side-link" href="javascript:void(0)">修改密码</a></li>
                             </ul>
                         </div>
                     </div>
@@ -18,17 +46,16 @@
                             <div class="box-bd">
                                 <div class="portal-main clearfix">
                                     <div class="user-card">
-                                        <h2 class="username">小游</h2>
-                                        <p class="tip">个性签名</p>
-                                        <a href="//account.xiaomi.com/pass/userInfo" target="_blank" class="link">修改个人信息 &gt;</a>
-                                        <a href="//account.xiaomi.com/pass/userInfo" target="_blank" class="link">修改密码 &gt;</a>
-                                        <img src="https://cdn.cnbj1.fds.api.mi-img.com/user-avatar/p01qGYayC5dk/UsSbkaQiQuJU5l.jpg" width="150" height="150" alt="小游" class="avatar">
+                                        <h2 class="username">{{info.nickname}}</h2>
+                                        <p class="tip">{{info.sign}}</p>
+                                        <a href="javascript:void(0)" @click="changeInfoDialog=true" class="link">修改个人信息 &gt;</a>
+                                        <img :src="info.avatar" width="150" height="150" alt class="avatar">
                                     </div>
                                     <div class="user-actions">
                                         <ul class="action-list">
-                                            <li>账户安全：<span class="level level-3">较高</span></li>
-                                            <li>绑定手机：<span><span class="tel">188******10</span></span></li>
-                                            <li>绑定邮箱：<span><span class="tel">15*******3@q*.com</span></span></li>
+                                            <li>上次登录时间：<span class="level level-3">{{info.lastLogin}}</span></li>
+                                            <li>收货地址：<span><span class="tel">{{info.site}}</span></span></li>
+                                            <li>用户名：<span><span class="tel">{{info.username}}</span></span></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -36,22 +63,22 @@
                                     <ul class="info-list clearfix">
                                         <li>
                                             <h3>待支付的订单：<span class="num">0</span></h3>
-                                            <a href="//order.mi.com/order/?type=7">查看待支付订单<v-icon name="chevron-right"/></a>
-                                            <img  src="//s01.mifile.cn/i/user/portal-icon-1.png" alt="">
+                                            <a href="javascript:void(0)">查看待支付订单<v-icon name="chevron-right"/></a>
+                                            <img src="//s01.mifile.cn/i/user/portal-icon-1.png" alt="">
                                         </li>
                                         <li>
                                             <h3>待收货的订单：<span class="num">0</span></h3>
-                                            <a href="//order.mi.com/order/?type=7">查看待收货订单<v-icon name="chevron-right"/></a>
+                                            <a href="javascript:void(0)">查看待收货订单<v-icon name="chevron-right"/></a>
                                             <img src="//s01.mifile.cn/i/user/portal-icon-2.png" alt="">
                                         </li>
                                         <li>
                                             <h3>待评价商品数：<span class="num">0</span></h3>
-                                            <a href="//www.mi.com/user/comment">查看待评价商品<v-icon name="chevron-right"/></a>
+                                            <a href="javascript:void(0)">查看待评价商品<v-icon name="chevron-right"/></a>
                                             <img src="//s01.mifile.cn/i/user/portal-icon-3.png" alt="">
                                         </li>
                                         <li>
                                             <h3>喜欢的商品：<span data-v-1ace6eb7="" class="num">0</span></h3>
-                                            <a href="//www.mi.com/user/favorite">查看喜欢的商品<v-icon name="chevron-right"/></a>
+                                            <a href="javascript:void(0)">查看喜欢的商品<v-icon name="chevron-right"/></a>
                                             <img src="//s01.mifile.cn/i/user/portal-icon-4.png" alt="">
                                         </li>
                                     </ul>
@@ -62,6 +89,46 @@
                 </div>
             </div>
         </div>
+        <el-dialog
+                title="修改个人信息"
+                :visible.sync="changeInfoDialog"
+                width="400px">
+            <el-form ref="form" label-width="80px">
+                <el-form-item label="昵称">
+                    <el-input v-model="info.nickname"></el-input>
+                </el-form-item>
+                <el-form-item label="签名">
+                    <el-input v-model="info.sign"></el-input>
+                </el-form-item>
+                <el-form-item label="收货地址">
+                    <el-input v-model="info.site"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="changeInfoDialog = false">取 消</el-button>
+            <el-button type="primary" @click="changeUserInfo">更新</el-button>
+          </span>
+        </el-dialog>
+        <el-dialog
+                title="修改密码"
+                :visible.sync="changePasswordDialog"
+                width="400px">
+            <el-form ref="form" label-width="80px">
+                <el-form-item label="原密码">
+                    <el-input v-model="passwordInfo.password"></el-input>
+                </el-form-item>
+                <el-form-item label="新密码">
+                    <el-input v-model="passwordInfo.newPassword"></el-input>
+                </el-form-item>
+                <el-form-item label="再次输入">
+                    <el-input v-model="passwordInfo.repeatPassword"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="changePasswordDialog = false">取 消</el-button>
+            <el-button type="primary" @click="changeUserInfo">更新</el-button>
+          </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -105,16 +172,76 @@
                 }
             ]
             return{
-                leftFunction
+                leftFunction,
+                info: {
+                    username:"",
+                    nickname:"",
+                    avatar:"",
+                    site:"",
+                    sign:"",
+                    lastLogin:""
+                },
+                changeInfoDialog:false,
+                changePasswordDialog:false,
+                passwordInfo:{
+                    password:"",
+                    newPassword:"",
+                    repeatPassword:""
+                }
+            }
+        },
+        mounted() {
+            this.getUserInfo()
+        },
+        methods:{
+            changeUserInfo(){ //修改用户的个人信息
+                const data = {
+                    ID:this.getCookie("userID"),
+                    token:this.getCookie("token"),
+                    nickname: this.info.nickname,
+                    sign: this.info.sign,
+                    avatar: this.info.avatar,
+                    site: this.info.site
+                }
+                this.tools.requests(this.G.SERVER+"/api/v1/user/changeInfo",data,"post").then((response)=> {
+                    if(response!=null && response.code===1){
+                        this.changeInfoDialog=false
+                        this.$message.success("更新成功")
+                        this.getUserInfo()
+                    }else{
+                        this.$message.error("更新失败")
+                    }
+                })
+            },
+            getUserInfo(){ //获取用户的个人信息
+                const data ={
+                    userID: this.getCookie("userID"),
+                    token: this.getCookie("token")
+                }
+                this.tools.requests(this.G.SERVER+"/api/v1/user/getInfo",data,"get").then((response)=> {
+                    if(response!=null && response.code===1){
+                        this.info = response.data
+                    }
+                })
+            },
+            changePassword(){ //修改用户密码
+                //判断两次用户输入是否相同
+                if(this.passwordInfo.newPassword!==this.passwordInfo.repeatPassword){
+                    this.$message.error("两次密码输入不相同")
+                }
             }
         }
     }
 </script>
 
 <style scoped>
+    .side-link:hover{
+        color: #FF6700;
+    }
     ul.info-list.clearfix li a {
         display: flex;
         align-items: center;
+        margin-top: 9px;
     }
     .uc-content-box.portal-content-box {
         display: flex;
@@ -200,7 +327,7 @@
         color: #616161;
     }
     .portal-content-box .user-card .tip{
-        margin: 0 0 10px;
+        margin: 6px 0 11px 0;
         color: #b0b0b0;
     }
     .portal-content-box .user-card .link{

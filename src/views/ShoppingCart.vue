@@ -17,7 +17,7 @@
                     align="center">
                 <template slot-scope="scope">
                     <router-link to="/commodityDetail">
-                        <el-image :src="scope.row.imgUrl" style="width: 5em;"></el-image>
+                        <el-image :src="scope.row.img.split('&&')[0]" style="width: 5em;"></el-image>
                         <div>{{ scope.row.detail }}</div>
                     </router-link>
                 </template>
@@ -35,7 +35,7 @@
                     width="260"
                     align="center">
                 <template slot-scope="scope">
-                    <el-input-number v-model="scope.row.num" @change="handleChangeNum(scope)" :min="1" :max="10" label="购买数量"></el-input-number>
+                    <el-input-number v-model="scope.row.count" @change="handleChangeNum(scope)" :min="1" :max="10" label="购买数量"></el-input-number>
                 </template>
             </el-table-column>
             <el-table-column
@@ -43,7 +43,7 @@
                     width=""
                     align="center">
                 <template slot-scope="scope">
-                    <span style="color: red;">{{ scope.row.totalPrice }} 元</span>
+                    <span style="color: red;">{{ scope.row.price * scope.row.count }} 元</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -69,32 +69,28 @@
     export default {
         data() {
             return {
-                tableData: [{
-                    imgUrl: 'https://cdn.cnbj0.fds.api.mi-img.com/b2c-shopapi-pms/pms_1581493329.10251213.jpg',
-                    detail: '小米10 Pro 全网通版 8GB+256GB 星空蓝',
-                    price: 4999,
-                    num: 1,
-                    totalPrice: 4999,
-                }, {
-                    imgUrl: '//cdn.cnbj0.fds.api.mi-img.com/b2c-shopapi-pms/pms_1557804685.13891176.jpg?thumb=1&w=80&h=80',
-                    detail: '米家驱蚊器基础版 3个装 白色',
-                    price: 99,
-                    num: 1,
-                    totalPrice: 99,
-                }],
+                tableData: [
+                    // cartId,
+                    // shopId,
+                    // img
+                    // shopName
+                    // price
+                    // count
+
+                ],
                 multipleSelection: [],
                 totalPrice: 0,
                 show: true
             }
         },
-
         methods: {
             handleSelectionChange(val) { // 当有选中的时候就会触发这个函数
                 console.log("选中", val)
                 var _this = this
                 this.multipleSelection = val;
+                _this.totalPrice = 0;
                 val.forEach(function (item) {
-                    _this.totalPrice = item.totalPrice + _this.totalPrice
+                    _this.totalPrice = item.count * item.price + _this.totalPrice
                 })
                 if(_this.multipleSelection.length === 0){
                     _this.show = true
@@ -109,20 +105,74 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => { // 确认删除
-                    this.tableData.splice(scope.$index, 1)
-                    this.$message({
-                        type: 'success',
-                        message: '删除成功!'
-                    });
+                    this.tools.requests(this.G.SERVER+"/api/v1/cart/deleteCart",{ // 修改商品的数量
+                        "cartID": scope.row.cartId,
+                        "userID": this.getCookie('userID'),
+                        "token": this.getCookie('token')
+                    },"post").then((res)=>{
+                        if(res.code != 1){ // 删除失败
+                            this.$message({
+                                showClose: true,
+                                message: '删除失败！',
+                                type: 'error'
+                            });
+                        }else {
+                            // 修改商品成功
+                            this.tableData.splice(scope.$index, 1)
+                            this.$message({
+                                type: 'success',
+                                message: '删除成功!'
+                            });
+                        }
+                    })
                 }).catch(() => {
                     // 取消删除
                 });
             },
-            handleChangeNum(scope){
+            handleChangeNum(scope){ // 修改购物车的商品数量
                 console.log("改变数量", scope.$index)
                 let index = scope.$index
-                this.tableData[index].totalPrice = this.tableData[index].num * this.tableData[index].price
+                this.tools.requests(this.G.SERVER+"/api/v1/cart/changeCartNum",{ // 修改商品的数量
+                    "shopID": scope.row.shopId,
+                    "ID": this.getCookie('userID'),
+                    "token": this.getCookie('token'),
+                    "number": this.tableData[index].count
+                },"post").then((res)=>{
+                    if(res.code != 1){ // 修改失败
+                        this.$message({
+                            showClose: true,
+                            message: res.msg + '！',
+                            type: 'error'
+                        });
+                    }else {
+                        // 修改商品数量成功
+                    }
+                })
+                if(this.multipleSelection > 0){ // 有选中的商品
+                    this.totalPrice = 0;
+                    this.tableData.forEach((item) => { // 修改总的价格
+                        console.log(item)
+                        this.totalPrice = item.count * item.price + this.totalPrice
+                    })
+                }
             }
+        },
+        mounted() {
+            // 获取购物车
+            this.tools.requests(this.G.SERVER+"/api/v1/cart/getCart",{
+                "userID": this.getCookie('userID'),
+                "token": this.getCookie('token')
+            },"get").then((res)=>{
+                if(res.code != 1){ // 获取失败
+                    this.$message({
+                        showClose: true,
+                        message: '获取失败！',
+                        type: 'error'
+                    });
+                }else {
+                    this.tableData = res.datas;
+                }
+            })
         }
     }
 </script>

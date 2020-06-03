@@ -13,9 +13,11 @@
                 </li>
             </ul>
             <div id="big_banner_pic_wrap">
-                <ul id="big_banner_pic">
-                    <li v-for="(item,index) in sideImg" :key="index"><a href="javascript:void(0)"><img :src="item.img"></a></li>
-                </ul>
+                <el-carousel>
+                    <el-carousel-item v-for="(item,index) in sideImg" :key="index">
+                        <img :src="item.img">
+                    </el-carousel-item>
+                </el-carousel>
             </div>
             <div id="big_banner_change_wrap">
                 <div id="big_banner_change_prev"></div>
@@ -165,7 +167,7 @@
                 {name:"小米旅行箱 24英寸 灰色 24寸",dec:"一款坚固的旅行箱伴您左右",url:"/commodityDetail/9561",price:"349",oldPrice:"399",img:"//cdn.cnbj0.fds.api.mi-img.com/b2c-shopapi-pms/pms_1553778518.87814930.jpg?thumb=1&w=200&h=200"},
                 {name:"米兔故事机 mini 蓝牙版 蓝色",dec:"陪伴宝宝时时刻刻",url:"/commodityDetail/9283",price:"129",oldPrice:"149",img:"//cdn.cnbj0.fds.api.mi-img.com/b2c-shopapi-pms/pms_1548833307.52655717.jpg?thumb=1&w=200&h=200"},
                 {name:"米兔点读笔 蓝色",dec:"一点即读，让美好发声",url:"/commodityDetail/9834",price:"169",oldPrice:"199",img:"//cdn.cnbj1.fds.api.mi-img.com/mi-mall/8ecfb7d29b51371785de8b83d05b6428.jpg?thumb=1&w=200&h=200&f=webp&q=90"},
-                {name:"小米多功能都市休闲胸包 深灰",dec:"装下你出行的所有需求",url:"/commodityDetail/3460",price:"59",oldPrice:"69",img:"//cdn.cnbj0.fds.api.mi-img.com/b2c-shopapi-pms/pms_1571038766.41824452.jpg?thumb=1&w=200&h=200"},
+                {name:"小米多功能都市休闲胸包 深灰",dec:"装下你出行的所有需求",url:"/commodityDetail/3460",price:"59",oldPrice:"69",img:"//cdn.cnbj0.fds.api.mi-img.com/b2c-miapp-a1/T1t4AgBmWv1RXrhCrK.jpg?thumb=1&w=200&h=200"},
             ]
             const phoneShop = [
                 {name:"小米10 青春版 5G",url:"/commodityDetail/10000224",dec:"50倍潜望式变焦 / 轻薄5G手机",price:"2099",img:"https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/8729282b199b3ec51e31c1b6b15f3f93.jpg?thumb=1&w=200&h=200&f=webp&q=90"},
@@ -189,90 +191,45 @@
         mounted() {
             // 获取所有商品
             this.tools.requests(this.G.SERVER+"/api/v1/shop/getAllShop",{},"get").then((response)=>{
-                const data=response.datas
-                const links = [
-                    {name:"手机 电话卡",url:"/commodityList/1",child:[]},
-                    {name:"电视 盒子",url:"/commodityList/2",child:[]},
-                    {name:"笔记本 显示器 平板",url:"/commodityList/3",child:[]},
-                    {name:"家电 插线板",url:"/commodityList/4",child:[]},
-                    {name:"出行",url:"/commodityList/5",child:[]},
-                    {name:"智能 路由器",url:"/commodityList/6",child:[]},
-                    {name:"电源 配件",url:"/commodityList/7",child:[]},
-                    {name:"健康 儿童",url:"/commodityList/8",child:[]},
-                    {name:"耳机 音响",url:"/commodityList/9",child:[]},
-                    {name:"生活 箱包",url:"/commodityList/10",child:[]}
-                ]
-                for(let index in response.datas){
-                    let img = data[index].img
-                    img = img.split("&&")[0]
-                    const link={
-                        name: data[index].name,
-                        img: img,
-                        url: "/commodityDetail/"+data[index].id
-                    }
-                    if(links[data[index].sort-1].child.length<24){
-                        links[data[index].sort-1].child.push(link)
-                    }
+                if(response!=null && response.code===1){
+                    const data=response.datas
+                    const links = [
+                        {name:"手机 电话卡",url:"/commodityList/1",child:[]},
+                        {name:"电视 盒子",url:"/commodityList/2",child:[]},
+                        {name:"笔记本 显示器 平板",url:"/commodityList/3",child:[]},
+                        {name:"家电 插线板",url:"/commodityList/4",child:[]},
+                        {name:"出行",url:"/commodityList/5",child:[]},
+                        {name:"智能 路由器",url:"/commodityList/6",child:[]},
+                        {name:"电源 配件",url:"/commodityList/7",child:[]},
+                        {name:"健康 儿童",url:"/commodityList/8",child:[]},
+                        {name:"耳机 音响",url:"/commodityList/9",child:[]},
+                        {name:"生活 箱包",url:"/commodityList/10",child:[]}
+                    ]
+                    for(let index in response.datas){
+                        let img = data[index].img
+                        img = img.split("&&")[0]
+                        const link={
+                            name: data[index].name,
+                            img: img,
+                            url: "/commodityDetail/"+data[index].id
+                        }
+                        if(links[data[index].sort-1].child.length<24){
+                            links[data[index].sort-1].child.push(link)
+                        }
 
-                }
-                Vue.set(this,"sideLink",links)
-                setTimeout(function () {
-                    //菜单栏的显示
-                    $("#banner_menu_wrap").children().hover(function(){
-                        $(this).css("background","#ff6700");
-                        $(this).children(".banner_menu_content").css("border","1px solid #F0F0F0").show();
-                    },function(){
-                        $(this).css("background","none");
-                        $(this).children(".banner_menu_content").css("border","0px solid #F0F0F0").hide();
-                    })
-                },500)
-                console.log(links)
-            })
-            //轮播
-            $(function(){
-                var i=0;
-                var big_banner_pic = $("#big_banner_pic");
-                var allimg=$("#big_banner_pic li").length;
-                function img_change(){
-                    var img_i=i*-1226+"px";
-                    big_banner_pic.animate({opacity:".2"},100,function(){
-                        big_banner_pic.css("left",img_i );
-                        big_banner_pic.animate({
-                            opacity: "1"
-                        }, 100);
-                    })
-                }
-                function automatic(){
-                    i+=1;
-                    if(i>=allimg){
-                        i=0;
                     }
-                    img_change();
+                    Vue.set(this,"sideLink",links)
+                    setTimeout(function () {
+                        //菜单栏的显示
+                        $("#banner_menu_wrap").children().hover(function(){
+                            $(this).css("background","#ff6700");
+                            $(this).children(".banner_menu_content").css("border","1px solid #F0F0F0").show();
+                        },function(){
+                            $(this).css("background","none");
+                            $(this).children(".banner_menu_content").css("border","0px solid #F0F0F0").hide();
+                        })
+                    },500)
                 }
-                let change_self_time;
-                change_self_time = setInterval(automatic, 3000);
-                //轮播上一张下一张图标控制
-                $("#big_banner_change_wrap").hover(function(){
-                    clearInterval(change_self_time);
-                    $("#big_banner_change_wrap").children().show();
-                },function(){
-                    change_self_time = setInterval(automatic, 3000);
-                    $("#big_banner_change_wrap").children().hide();
-                })
-                $("#big_banner_change_prev").click(function(){
-                    i += 1;
-                    if (i >= allimg) {
-                        i = 0;
-                    }
-                    img_change();
-                })
-                $("#big_banner_change_next").click(function(){
-                    i -= 1;
-                    if (i <= 0) {
-                        i = allimg - 1;
-                    }
-                    img_change();
-                })
             })
             $(".floor_goods_wrap_li").hover(function () {
                 $(this).css({"top":"-5px",
@@ -286,6 +243,12 @@
         }
     }
 </script>
+
+<style>
+    .el-carousel__container{
+        height: 460px!important;
+    }
+</style>
 
 <style src="../assets/css/xiaomi.css" scoped />
 

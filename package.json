@@ -12,7 +12,9 @@
     "core-js": "^3.6.5",
     "element-ui": "^2.13.2",
     "jquery": "^3.5.1",
+    "node-sass": "^4.14.1",
     "qs": "^6.9.4",
+    "sass-loader": "^8.0.2",
     "vue": "^2.6.11",
     "vue-awesome": "^4.0.2",
     "vue-router": "^3.2.0"
