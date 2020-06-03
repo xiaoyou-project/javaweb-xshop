@@ -2,6 +2,9 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 
+//引入全局变量组件
+import global from './util/global'
+Vue.use(global)
 
 // 仅引入用到的图标以减小打包体积
 import 'vue-awesome/icons/'

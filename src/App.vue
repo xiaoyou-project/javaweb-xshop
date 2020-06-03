@@ -4,7 +4,7 @@
       <div id="head_wrap">
         <div id="head_nav">
           <router-link class="head_nav_a" to="/">主页</router-link>
-          <div v-for="item in topLink" :key="item">
+          <div v-for="(item,index) in topLink" :key="index">
             <span>|</span>
             <a class="head_nav_a" target="_blank" :href="item.url">{{ item.name }}</a>
           </div>
@@ -47,7 +47,7 @@
           </div>
           <div id="menu_nav">
               <ul>
-                  <li v-for="item in topSecondLink" :key="item" class="menu_li"><a :href="item.url">{{item.name}}</a></li>
+                  <li v-for="(item,index) in topSecondLink" :key="index" class="menu_li"><a :href="item.url">{{item.name}}</a></li>
               </ul>
           </div>
           <div id="find_wrap">
