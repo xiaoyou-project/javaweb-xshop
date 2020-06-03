@@ -6,8 +6,8 @@
             </el-header>
             <el-main>
                 <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="auto" class="demo-ruleForm">
-                    <el-form-item label="账号" prop="account">
-                        <el-input type="text" v-model="ruleForm.account" autocomplete="off" ></el-input>
+                    <el-form-item label="账号" prop="username">
+                        <el-input type="text" v-model="ruleForm.username" autocomplete="off" ></el-input>
                     </el-form-item>
                     <el-form-item label="密码" prop="password">
                         <el-input type="password" v-model="ruleForm.password" autocomplete="off" ></el-input>
@@ -27,15 +27,16 @@
 </template>
 
 <script>
+
     export default {
         data() {
             return {
                 ruleForm: {
-                    account: '', // 存储输入的账号
+                    username: '', // 存储输入的账号
                     password: '', // 存储密码
                 },
                 rules: { // 定义验证表单的验证规则
-                    account: [
+                    username: [
                         { required: true, message: '账号不能为空', trigger: 'blur' },
                     ],
                     password: [
@@ -47,11 +48,28 @@
         methods: {
             submitForm(formName) { // 提交表单
                 this.$refs[formName].validate((valid) => {
-                    console.log("提交表单", valid, this.ruleForm)
+                    console.log("登录账号", valid, this.ruleForm)
                     if (valid) {
-                        alert('submit!');
+                        this.tools.requests(this.G.SERVER +"/api/v1/user/login" ,this.ruleForm,"post").then((res) => {
+                            if(res.code == 0){
+                                this.$message({
+                                    showClose: true,
+                                    message: res.msg,
+                                    type: 'error'
+                                });
+                            }else { // 登录成功
+                                this.setCookie('token', res.data.token, 1); // 设置cookie
+                                console.log("后端的cookie", res.data.token)
+                                console.log("cookie", this.getCookie('token'))
+                                this.$router.push({path: '/'}) // 跳转到主页
+                            }
+                        })
                     } else {
-                        console.log('error submit!!');
+                        this.$message({
+                            showClose: true,
+                            message: '提交失败！',
+                            type: 'error'
+                        });
                         return false;
                     }
                 });

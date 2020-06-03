@@ -42,12 +42,12 @@
     <div id="main_head_box">
       <div id="menu_wrap">
           <div id="menu_logo">
-              <img style="width:45px;height:45px" src="img/logo.png">
-              <img class="img-top-ad" src="img/top.gif">
+              <img style="width:45px;height:45px" src="/img/logo.png">
+              <img class="img-top-ad" src="/img/top.gif">
           </div>
           <div id="menu_nav">
               <ul>
-                  <li v-for="(item,index) in topSecondLink" :key="index" class="menu_li"><a :href="item.url">{{item.name}}</a></li>
+                  <li v-for="(item,index) in topSecondLink" :key="index" class="menu_li"><a href="javascript:void(0)">{{item.name}}</a></li>
               </ul>
           </div>
           <div id="find_wrap">
@@ -64,19 +64,19 @@
         <div class="footer-service">
           <ul class="list-service clearfix">
             <li>
-              <a rel="nofollow" href="//www.mi.com/static/fast/" target="_blank"><v-icon name="wrench" />预约维修服务</a>
+              <a rel="nofollow" href="javascript:void(0)"><v-icon name="wrench" />预约维修服务</a>
             </li>
             <li>
-              <a rel="nofollow" href="//www.mi.com/service/exchange#back" target="_blank"><v-icon name="recycle" />7天无理由退货</a>
+              <a rel="nofollow" href="javascript:void(0)"><v-icon name="recycle" />7天无理由退货</a>
             </li>
             <li>
-              <a rel="nofollow" href="//www.mi.com/service/exchange#back" target="_blank"><v-icon name="truck" />15天免费换货</a>
+              <a rel="nofollow" href="javascript:void(0)"><v-icon name="truck" />15天免费换货</a>
             </li>
             <li>
-              <a rel="nofollow" href="//www.mi.com/service/buy/Postal%20policy" target="_blank"><v-icon name="gift" />满99元包邮</a>
+              <a rel="nofollow" href="javascript:void(0)"><v-icon name="gift" />满99元包邮</a>
             </li>
             <li>
-              <a rel="nofollow" href="//www.mi.com/static/maintainlocation/" target="_blank" ><v-icon name="map-marker-alt"/>520余家售后网点</a>
+              <a rel="nofollow" href="javascript:void(0)"><v-icon name="map-marker-alt"/>520余家售后网点</a>
             </li>
           </ul>
         </div>
@@ -118,9 +118,9 @@
       <div class="foot_note_box">
         <div class="foot_note_wrap">
           <div class="foot_note_con">
-            <span class="foot_note_txt">
-              <a>小米商城</a><h>|</h><a>MIUI</a><h>|</h><a>米家</a><h>|</h><a>米聊</a><h>|</h><a>多看</a><h>|</h><a>游戏</a><h>|</h><a>小米天猫店</a><h>|</h><a>小米集团隐私政策</a><h>|</h><a>小米商城用户协议</a><h>|</h><a>问题反馈</a>
-            </span>
+            <div class="foot_note_txt">
+              <a>小米商城</a><span>|</span><a>MIUI</a><span>|</span><a>米家</a><span>|</span><a>米聊</a><span>|</span><a>多看</a><span>|</span><a>游戏</a><span>|</span><a>小米天猫店</a><span>|</span><a>小米集团隐私政策</a><span>|</span><a>小米商城用户协议</a><span>|</span><a>问题反馈</a>
+            </div>
           </div>
         </div>
       </div>

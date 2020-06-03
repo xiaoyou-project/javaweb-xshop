@@ -1,13 +1,13 @@
 <template>
     <div class="mainDiv">
         <el-container>
-            <el-header>
-                <h1>注册界面</h1>
-            </el-header>
             <el-main>
                 <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="auto" class="demo-ruleForm">
-                    <el-form-item label="账号" prop="account">
-                        <el-input type="text" v-model="ruleForm.account" autocomplete="off" ></el-input>
+                    <el-form-item label="昵称" prop="nickname">
+                        <el-input type="text" v-model="ruleForm.nickname" autocomplete="off" ></el-input>
+                    </el-form-item>
+                    <el-form-item label="账号" prop="username">
+                        <el-input type="text" v-model="ruleForm.username" autocomplete="off" ></el-input>
                     </el-form-item>
                     <el-form-item label="密码" prop="password">
                         <el-input type="password" v-model="ruleForm.password" autocomplete="off"></el-input>
@@ -29,6 +29,7 @@
 </template>
 
 <script>
+
     export default {
         data() {
             var checkPass = (rule, value, callback) => {
@@ -42,11 +43,15 @@
             };
             return {
                 ruleForm: {
-                    account: '', // 存储输入的账号
+                    nickname: '', // 存储昵称
+                    username: '', // 存储输入的账号
                     password: '', // 存储密码
                 },
                 rules: { // 定义验证表单的验证规则
-                    account: [
+                    nickname: [
+                        { required: true, message: '昵称不能为空', trigger: 'blur' }
+                    ],
+                    username: [
                         { required: true, message: '账号不能为空', trigger: 'blur' }
                     ],
                     password: [
@@ -61,11 +66,30 @@
         methods: {
             submitForm(formName) { // 提交表单
                 this.$refs[formName].validate((valid) => {
-                    console.log("提交表单", valid, this.ruleForm)
+                    console.log("注册账号", valid, this.ruleForm)
                     if (valid) {
-                        alert('submit!');
+                        this.tools.requests(this.G.SERVER +"/api/v1/user/register" ,this.ruleForm,"post").then((res) => {
+                            if(res.code == 0){
+                                this.$message({
+                                    showClose: true,
+                                    message: res.msg,
+                                    type: 'error'
+                                });
+                            }else {
+                                this.$alert('注册成功！！！', '提示', {
+                                    confirmButtonText: '确定',
+                                    callback: () => {
+                                        this.$router.push({path: '/login'})
+                                    }
+                                });
+                            }
+                        })
                     } else {
-                        console.log('error submit!!');
+                        this.$message({
+                            showClose: true,
+                            message: '提交失败！',
+                            type: 'error'
+                        });
                         return false;
                     }
                 });

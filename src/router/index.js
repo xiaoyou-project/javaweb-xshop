@@ -19,12 +19,13 @@ Vue.use(VueRouter)
     {path: '/register', name: 'register', component: ()=>import('../views/RegisterPage')},
     {path: '/commodityDetail/:id', name: 'commodityDetail', component: ()=>import('../views/CommodityDetail')},
     {path: '/shoppingCart', name: 'shoppingCart', component: ()=>import('../views/ShoppingCart')},
-    {path: '/commodityList', name: 'commodityList', component: ()=>import('../views/CommodityList')},
+    {path: '/commodityList/:id', name: 'commodityList', component: ()=>import('../views/CommodityList')},
     {path: '/login', name: 'Login', component: ()=>import('../views/LoginPage')},
 ]
 
 const router = new VueRouter({
-  routes
+    mode: 'history',
+    routes
 })
 
 export default router
