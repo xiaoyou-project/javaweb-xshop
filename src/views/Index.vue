@@ -4,7 +4,7 @@
             <ul id="banner_menu_wrap">
                 <li v-for="(item,index) in sideLink" :key="index" class="active">
                     <router-link :to="item.url">{{item.name}}</router-link>
-                    <a class="banner_menu_i">&gt;</a>
+                    <a class="banner_menu_i"><v-icon name="chevron-right"/></a>
                     <div class="banner_menu_content" style="width:990px;top:0">
                         <ul class="banner_menu_content_ul">
                             <li v-for="(item2,index2) in item.child" :key="index2"><a :href="item2.url"><img class="shop-img" :src="item2.img"><span>{{item2.name}}</span></a></li>

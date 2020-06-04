@@ -63,7 +63,7 @@
           </div>
           <div id="menu_nav">
               <ul>
-                  <li v-for="(item,index) in topSecondLink" :key="index" class="menu_li"><a href="javascript:void(0)">{{item.name}}</a></li>
+                  <li v-for="(item,index) in topSecondLink" :key="index" class="menu_li"><router-link :to="item.url">{{item.name}}</router-link></li>
               </ul>
           </div>
           <div id="find_wrap">
@@ -156,14 +156,13 @@
             {name: "B站",url: "https://space.bilibili.com/343147393"},
         ]
         const topSecondLink = [
-            {name: "小米手机",url: ""},
-            {name: "Redmi 红米",url: ""},
-            {name: "电视",url: ""},
-            {name: "笔记本",url: ""},
-            {name: "家电",url: ""},
-            {name: "笔记本",url: ""},
-            {name: "家电",url: ""},
-            {name: "智能硬件",url: ""},
+            {name: "小米手机",url: "/commodityList/1"},
+            {name: "电视",url: "/commodityList/2"},
+            {name: "笔记本",url: "/commodityList/3"},
+            {name: "家电",url: "/commodityList/4"},
+            {name: "路由器",url: "/commodityList/6"},
+            {name: "健康",url: "/commodityList/8"},
+            {name: "生活",url: "/commodityList/10"},
         ]
       return{
           topLink,

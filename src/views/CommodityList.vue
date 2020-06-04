@@ -2,7 +2,7 @@
     <div class="app-body">
         <div class="page-main channel-page">
             <div class="block">
-                <el-carousel trigger="click" height="40em" indicator-position="none" arrow="never" direction="horizontal">
+                <el-carousel v-show="slideShowList" trigger="click" height="40em" indicator-position="none" arrow="never" direction="horizontal">
                     <el-carousel-item v-for="(item, index) in slideShowList" :key="index">
                         <el-image :src="item" style=""></el-image>
                     </el-carousel-item>
@@ -99,23 +99,37 @@
                 ]
             }
         },
+        watch:{
+            $route(){
+                this.getShop()
+            }
+        },
         mounted() {
-            // 获取某种类型的商品
-            this.tools.requests(this.G.SERVER+"/api/v1/shop/getShopList",{"type": this.$route.params.id},"get").then((res)=>{
-                if(res.code != 1){ // 获取失败
-                    this.$message({
-                        showClose: true,
-                        message: '获取失败！',
-                        type: 'error'
-                    });
-                }else {
-                    this.commodityList = res.datas
-                    this.slideShowList = res.data.split("&&")
-                    if(this.slideShowList.length < 2){
-                        this.slideShowList.push(this.slideShowList[0])
+            this.getShop()
+        },
+        methods:{
+            getShop(){
+                // 获取某种类型的商品
+                this.tools.requests(this.G.SERVER+"/api/v1/shop/getShopList",{"type": this.$route.params.id},"get").then((res)=>{
+                    if(res.code !== 1){ // 获取失败
+                        this.$message({
+                            showClose: true,
+                            message: '获取失败！',
+                            type: 'error'
+                        });
+                    }else {
+                        this.commodityList = res.datas
+                        if(res.data===""){
+                            this.slideShowList=null
+                            return
+                        }
+                        this.slideShowList = res.data.split("&&")
+                        if(this.slideShowList.length < 2){
+                            this.slideShowList.push(this.slideShowList[0])
+                        }
                     }
-                }
-            })
+                })
+            }
         }
     }
 </script>

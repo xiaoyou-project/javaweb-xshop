@@ -136,43 +136,7 @@
     export default {
         name: "Me",
         data(){
-            const leftFunction = [
-                {
-                    name:"订单中心",
-                    child:[
-                        {name:"我的订单",url:""},
-                        {name:"评价晒单",url:""},
-                        {name:"话费充值订单",url:""},
-                        {name:"以旧换新订单",url:""}
-                    ]
-                },
-                {
-                    name:"个人中心",
-                    child:[
-                        {name:"我的个人中心",url:""},
-                        {name:"消息通知",url:""},
-                        {name:"收货地址",url:""},
-                        {name:"喜欢的商品",url:""}
-                    ]
-                },
-                {
-                    name:"售后服务",
-                    child:[
-                        {name:"服务记录",url:""},
-                        {name:"申请服务",url:""},
-                        {name:"领取快递报销",url:""}
-                    ]
-                },
-                {
-                    name:"账户管理",
-                    child:[
-                        {name:"个人信息",url:""},
-                        {name:"修改密码",url:""}
-                    ]
-                }
-            ]
             return{
-                leftFunction,
                 info: {
                     username:"",
                     nickname:"",

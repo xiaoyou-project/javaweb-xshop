@@ -60,7 +60,7 @@
             <router-link to="/" style="font-size: 2em;">继续购物</router-link> |
             <span>共 <span style="font-size: 2em;">{{tableData.length}}</span> 件商品，已选择 <span style="font-size: 2em;">{{multipleSelection.length}}</span> 件</span>
             合计：<span style="font-size: 2em; color: #ff6700;">{{ totalPrice }}</span> 元
-            <el-button type="danger" plain style="width: 15em;height: 3em; font-size: 1.5em;margin-left: 15em;" :disabled="show">结算</el-button>
+            <el-button type="danger" plain style="width: 15em;height: 3em; font-size: 1.5em;margin-left: 12em;" :disabled="show">结算</el-button>
         </div>
     </div>
 </template>

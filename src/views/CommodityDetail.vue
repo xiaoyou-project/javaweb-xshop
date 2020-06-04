@@ -21,8 +21,8 @@
                     <el-divider></el-divider>
                     <div style="padding: 2em;border: 1px solid #eee;background: #eeeeee; margin-top: 3em;font-size: 1.2em;">
                         <i class="el-icon-location-information"></i>
-                        <span> 北京 北京市 海淀区 清河街道 </span>
-                        <el-link type="primary"><router-link to=""> 修改地址</router-link></el-link>
+                        <span> {{site}} </span>
+                        <el-link type="danger" @click="changeSite=true">修改</el-link>
                     </div>
                     <div style="padding: 2em;border: 1px solid #eee;background: #eeeeee; margin-top: 1.5em;">
                         <div style="font-size: 1em;">
@@ -41,12 +41,26 @@
                             <a @click="addCommodity" class="btn btn-primary">加入购物车</a>
                         </div>
                         <div class="favorite-btn">
-                            <a class="btn-gray btn-like"><v-icon style="margin-right: 2px" name="heart"/>喜欢</a>
+                            <a @click="love" class="btn-gray btn-like"><v-icon style="margin-right: 2px" name="heart"/>喜欢</a>
                         </div>
                     </div>
                 </el-main>
             </div>
         </el-container>
+        <el-dialog
+                title="修改地址"
+                :visible.sync="changeSite"
+                width="400px">
+            <el-form ref="form" label-width="80px">
+                <el-form-item label="地址">
+                    <el-input v-model="site"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="changeSite = false">取 消</el-button>
+            <el-button type="primary" @click="changeSiteInfo">修改地址</el-button>
+          </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -62,7 +76,11 @@
                 price: 66,
                 old_price: 66,
                 commoditySimpleDetail: '', // 简略描述信息
-                other: '' // 其它描述
+                other: '', // 其它描述,
+                site: '中国', // 用户地址
+                isLogin:false,
+                info:null,
+                changeSite:false
             }
         },
         methods: {
@@ -86,33 +104,73 @@
                         });
                     }
                 })
+            },
+            love(){
+              this.$message.success("别点了，这个功能还没开发呢！")
+            },
+            initInfom(){
+                // 获取商品详情信息
+                this.tools.requests(this.G.SERVER+"/api/v1/shop/getInfo",{"shopID": this.$route.params.id},"get").then((res)=>{
+                    if(res.code !== 1){ // 获取失败
+                        this.$message({
+                            showClose: true,
+                            message: res.msg + '！',
+                            type: 'error'
+                        });
+                    }else {
+                        this.imgList = res.data.img.split("&&")
+                        this.price = res.data.price
+                        this.old_price = res.data.oldPrice
+                        this.commodityReferral = res.data.description
+                        this.commoditySimpleDetail = res.data.name
+                        this.name = res.data.name
+                        this.other = res.data.other
+                    }
+                });
+                //获取用户地址
+                this.tools.requests(this.G.SERVER+"/api/v1/user/getInfo",{userID: this.getCookie("userID"),token: this.getCookie("token")},"get").then((response)=> {
+                    if(response!=null && response.code===1){
+                        this.isLogin = true
+                        this.info = response.data
+                        this.site = response.data.site
+                    }else{
+                        this.isLogin=false
+                    }
+                })
+            },
+            changeSiteInfo(){
+                const data = {
+                    ID:this.getCookie("userID"),
+                    token:this.getCookie("token"),
+                    nickname: this.info.nickname,
+                    sign: this.info.sign,
+                    avatar: this.info.avatar,
+                    site: this.site
+                }
+                this.tools.requests(this.G.SERVER+"/api/v1/user/changeInfo",data,"post").then((response)=> {
+                    if(response!=null && response.code===1){
+                        this.changeSite=false
+                        this.$message.success("更新成功")
+                        this.initInfom()
+                    }else{
+                        this.$message.error("更新失败")
+                    }
+                })
             }
         },
         mounted() {
-            // 获取商品详情信息
-            this.tools.requests(this.G.SERVER+"/api/v1/shop/getInfo",{"shopID": this.$route.params.id},"get").then((res)=>{
-                if(res.code != 1){ // 获取失败
-                    this.$message({
-                        showClose: true,
-                        message: res.msg + '！',
-                        type: 'error'
-                    });
-                }else {
-                    this.imgList = res.data.img.split("&&")
-                    this.price = res.data.price
-                    this.old_price = res.data.oldPrice
-                    this.commodityReferral = res.data.description
-                    this.commoditySimpleDetail = res.data.name
-                    this.name = res.data.name
-                    this.other = res.data.other
-                }
-            })
+            this.initInfom();
+        },
+        watch:{
+            $route(){
+                this.initInfom();
+            }
         }
     }
 </script>
 
 <style>
-   .mainDiv .el-container{
+    .mainDiv .el-container{
         display: flex;
         justify-content: center;
     }
@@ -183,8 +241,6 @@
         border-color: #f25807;
         color: #fff;
     }
-
-
 
     .el-aside {
         width: 45em;
