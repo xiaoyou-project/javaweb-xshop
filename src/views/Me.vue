@@ -115,18 +115,18 @@
                 width="400px">
             <el-form ref="form" label-width="80px">
                 <el-form-item label="原密码">
-                    <el-input v-model="passwordInfo.password"></el-input>
+                    <el-input type="password" v-model="passwordInfo.password"></el-input>
                 </el-form-item>
                 <el-form-item label="新密码">
-                    <el-input v-model="passwordInfo.newPassword"></el-input>
+                    <el-input type="password" v-model="passwordInfo.newPassword"></el-input>
                 </el-form-item>
                 <el-form-item label="再次输入">
-                    <el-input v-model="passwordInfo.repeatPassword"></el-input>
+                    <el-input type="password" v-model="passwordInfo.repeatPassword"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
             <el-button @click="changePasswordDialog = false">取 消</el-button>
-            <el-button type="primary" @click="changeUserInfo">更新</el-button>
+            <el-button type="primary" @click="changePassword">修改密码</el-button>
           </span>
         </el-dialog>
     </div>
@@ -229,6 +229,12 @@
                 if(this.passwordInfo.newPassword!==this.passwordInfo.repeatPassword){
                     this.$message.error("两次密码输入不相同")
                 }
+                //发送请求重置密码
+                this.tools.requests(this.G.SERVER+"/api/v1/user/changeInfo",{},"post").then((response)=> {
+                    if (response != null && response.code === 1) {
+                        //
+                    }
+                })
             }
         }
     }

@@ -24,7 +24,7 @@
                           <li><a rel="nofollow" href="javascript:void(0)">评价晒单</a></li>
                           <li><a rel="nofollow" href="javascript:void(0)">我的喜欢</a></li>
                           <li><a rel="nofollow" href="javascript:void(0)">小米账户</a></li>
-                          <li><a rel="nofollow" href="javascript:void(0)">退出登录</a></li>
+                          <li><a rel="nofollow" @click="logout" href="javascript:void(0)">退出登录</a></li>
                       </ul>
                   </div>
               </div>
@@ -169,18 +169,11 @@
           nickname:""
       }
     },
+      updated() {
+        this.getInfo()
+      },
       mounted() {
-          //获取cookie
-          const data ={
-              userID: this.getCookie("userID"),
-              token: this.getCookie("token")
-          }
-          this.tools.requests(this.G.SERVER+"/api/v1/user/getInfo",data,"get").then((response)=> {
-              if(response!=null && response.code===1){
-                  this.isLogin = true
-                  this.nickname = response.data.nickname
-              }
-          })
+      this.getInfo()
       //搜索框失去和获取焦点border颜色改变
       $("#find_input").focus(function(){
           $("#find_wrap").css("border","1px solid #ff6700");
@@ -201,7 +194,28 @@
         },function(){
             $(this).css({"background":"none",color:"#ff6700"});
         })
-    }
+    },
+      methods:{
+        getInfo(){
+            //获取cookie
+            const data ={
+                userID: this.getCookie("userID"),
+                token: this.getCookie("token")
+            }
+            this.tools.requests(this.G.SERVER+"/api/v1/user/getInfo",data,"get").then((response)=> {
+                if(response!=null && response.code===1){
+                    this.isLogin = true
+                    this.nickname = response.data.nickname
+                }
+            })
+        },
+        logout(){
+            this.delCookie('userID')
+            this.delCookie('token')
+            this.isLogin=false
+            this.$message.success("退出登录成功")
+        }
+      }
   }
 </script>
 <style>
