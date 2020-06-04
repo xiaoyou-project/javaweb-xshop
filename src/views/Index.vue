@@ -77,7 +77,7 @@
                                         7x4iTALjhcgVQSIl3v87w5vePcY/AQYAFYR6skFSqBUAAAAASUVORK5CYII=" alt="小米闪购">
                                 <div class="desc">距离结束还有</div>
                                 <div class="countdown clearfix">
-                                    <span>06</span><i>:</i><span>{{minute}}</span><i>:</i><span>{{second}}</span>
+                                    <span>00</span><i>:</i><span>{{minute}}</span><i>:</i><span>{{second}}</span>
                                 </div>
                             </div>
                             <div id="J_flashSaleList" class="span16 flashsale-list swiper-container swiper-no-swiping swiper-container-initialized swiper-container-horizontal">

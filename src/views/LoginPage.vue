@@ -1,11 +1,8 @@
 <template>
     <div class="mainDiv">
         <el-container>
-            <el-header>
-                <h1>登录界面</h1>
-            </el-header>
             <el-main>
-                <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="auto" class="demo-ruleForm">
+             <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="auto" class="demo-ruleForm">
                     <el-form-item label="账号" prop="username">
                         <el-input type="text" v-model="ruleForm.username" autocomplete="off" ></el-input>
                     </el-form-item>
@@ -13,21 +10,16 @@
                         <el-input type="password" v-model="ruleForm.password" autocomplete="off" ></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
-                        <el-button @click="resetForm('ruleForm')">重置</el-button>
+                        <div class="login-button" @click="submitForm('ruleForm')">登录</div>
                     </el-form-item>
                 </el-form>
                 <el-link type="info"><router-link to="/register">注册账号</router-link></el-link>
             </el-main>
-            <el-footer>
-                底部内容
-            </el-footer>
         </el-container>
     </div>
 </template>
 
 <script>
-
     export default {
         data() {
             return {
@@ -82,6 +74,18 @@
 </script>
 
 <style scoped>
+    .login-button {
+        background-color: #ff6700;
+        width: 100%;
+        height: 50px;
+        line-height: 50px;
+        display: block;
+        margin-bottom: 14px;
+        text-align: center;
+        font-size: 14px;
+        color: #fff;
+        cursor: pointer;
+    }
     .mainDiv {
         width: 50%;
         margin: 3em auto;

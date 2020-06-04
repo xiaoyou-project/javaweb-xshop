@@ -544,11 +544,13 @@ html table {
         margin-bottom: 10px; }
       #foot_box #foot_wrap .foot_bottom .foot_bottom_r a:nth-child(2) {
         font-size: 13px;
+        color: #616161;
         display: block;
         margin-bottom: 5px; }
       #foot_box #foot_wrap .foot_bottom .foot_bottom_r a:nth-child(3) {
         font-size: 13px;
         display: block;
+        color: #616161;
         margin-bottom: 15px; }
       #foot_box #foot_wrap .foot_bottom .foot_bottom_r span {
         display: block;

@@ -21,9 +21,6 @@
                 </el-form>
                 <el-link type="info"><router-link to="/login">已有账号</router-link></el-link>
             </el-main>
-            <el-footer>
-                底部内容
-            </el-footer>
         </el-container>
     </div>
 </template>
