@@ -226,6 +226,9 @@
             this.isLogin=false
             this.$message.success("退出登录成功")
             this.$router.push("/")
+            this.shopNum = 0
+            this.shops = null
+            this.totalMoney = 0
         },
         search(){ //搜素功能
             const path = `/search/${this.key}`
