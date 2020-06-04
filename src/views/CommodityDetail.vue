@@ -22,7 +22,7 @@
                     <div style="padding: 2em;border: 1px solid #eee;background: #eeeeee; margin-top: 3em;font-size: 1.2em;">
                         <i class="el-icon-location-information"></i>
                         <span> {{site}} </span>
-                        <el-link type="danger" @click="changeSite=true">修改</el-link>
+                        <el-link v-show="isLogin" type="danger" @click="changeSite=true">修改</el-link>
                     </div>
                     <div style="padding: 2em;border: 1px solid #eee;background: #eeeeee; margin-top: 1.5em;">
                         <div style="font-size: 1em;">
