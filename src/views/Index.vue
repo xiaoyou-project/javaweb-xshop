@@ -194,16 +194,16 @@
                 if(response!=null && response.code===1){
                     const data=response.datas
                     const links = [
-                        {name:"手机 电话卡",url:"/commodityList/1",child:[]},
-                        {name:"电视 盒子",url:"/commodityList/2",child:[]},
-                        {name:"笔记本 显示器 平板",url:"/commodityList/3",child:[]},
-                        {name:"家电 插线板",url:"/commodityList/4",child:[]},
-                        {name:"出行",url:"/commodityList/5",child:[]},
-                        {name:"智能 路由器",url:"/commodityList/6",child:[]},
-                        {name:"电源 配件",url:"/commodityList/7",child:[]},
-                        {name:"健康 儿童",url:"/commodityList/8",child:[]},
-                        {name:"耳机 音响",url:"/commodityList/9",child:[]},
-                        {name:"生活 箱包",url:"/commodityList/10",child:[]}
+                        {name:"手机 电话卡",url:"/commodityList/1?name=手机 电话卡",child:[]},
+                        {name:"电视 盒子",url:"/commodityList/2?name=电视 盒子",child:[]},
+                        {name:"笔记本 显示器 平板",url:"/commodityList/3?name=笔记本 显示器 平板",child:[]},
+                        {name:"家电 插线板",url:"/commodityList/4?name=家电 插线板",child:[]},
+                        {name:"出行",url:"/commodityList/5?name=出行",child:[]},
+                        {name:"智能 路由器",url:"/commodityList/6?name=智能 路由器",child:[]},
+                        {name:"电源 配件",url:"/commodityList/7?name=电源 配件",child:[]},
+                        {name:"健康 儿童",url:"/commodityList/8?name=健康 儿童",child:[]},
+                        {name:"耳机 音响",url:"/commodityList/9?name=耳机 音响",child:[]},
+                        {name:"生活 箱包",url:"/commodityList/10?name=生活 箱包",child:[]}
                     ]
                     for(let index in response.datas){
                         let img = data[index].img

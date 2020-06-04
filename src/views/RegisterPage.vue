@@ -66,7 +66,6 @@
         methods: {
             submitForm(formName) { // 提交表单
                 this.$refs[formName].validate((valid) => {
-                    console.log("注册账号", valid, this.ruleForm)
                     if (valid) {
                         this.tools.requests(this.G.SERVER +"/api/v1/user/register" ,this.ruleForm,"post").then((res) => {
                             if(res.code == 0){

@@ -29,23 +29,25 @@
                   </div>
               </div>
           </div>
-          <div id="head_car">
-            <router-link to="/shoppingCart" class="head_car_text">购物车（0）</router-link>
-            <div id="car_content" style="height: 0px;width:0px;z-index: 999;display: none">
+          <div id="head_car" class="shopping-cart">
+            <router-link to="/shoppingCart" class="head_car_text">购物车（{{shopNum}}）</router-link>
+            <div id="car_content" style="height: 0px;width:0px;z-index: 999;">
                 <div class="shop-list">
-                    <div class="shop-item">
-                        <img src="https://cdn.cnbj0.fds.api.mi-img.com/b2c-shopapi-pms/pms_1587873628.89959326.jpg?width=60&height=60">
-                        <div class="shop-title">小米10青春版 8GB+128GB 蓝莓薄荷</div>
-                        <div class="shop-title">2499元 × 1</div>
+                    <div v-for="(item,index) in shops" :key="index" class="shop-item">
+                        <router-link class="shop-link" :to="'/commodityDetail/'+item.shopId">
+                            <img :src="item.img">
+                            <div class="shop-title shop-name">{{item.shopName}}</div>
+                            <div class="shop-title">{{item.price}}元×{{item.count}}</div>
+                        </router-link>
                     </div>
                 </div>
                 <div class="shop-bottom">
                     <div class="bottom-left">
-                        <div class="shop-num">共一件商品</div>
-                        <div class="shop-price">2499</div>
+                        <div class="shop-num">总价格</div>
+                        <div class="shop-price">{{totalMoney}}元</div>
                     </div>
                     <div class="bottom-right">
-                        <div class="bottom-sum">去购物结算</div>
+                        <router-link to="/shoppingCart"><div class="bottom-sum">去购物结算</div></router-link>
                     </div>
                 </div>
             </div>
@@ -66,9 +68,9 @@
           </div>
           <div id="find_wrap">
               <div id="find_bar">
-                  <input type="text" id="find_input">
+                  <input v-model="key" type="text" id="find_input">
               </div>
-              <div id="find_but">GO</div>
+              <div id="find_but" @click="search">GO</div>
           </div>
       </div>
     </div>
@@ -144,6 +146,7 @@
 <style src="./assets/css/xiaomi.css" scoped />
 <script>
   import $ from "jquery";
+  import Vue from "vue"
   export default {
     name: "index",
     data() {
@@ -166,11 +169,18 @@
           topLink,
           topSecondLink,
           isLogin:false,
-          nickname:""
+          nickname:"",
+          shopNum:0,
+          shops:null,
+          totalMoney:0,
+          key:""
       }
     },
-      updated() {
-        this.getInfo()
+      watch:{
+          $route(){
+              this.getInfo()
+              this.getShoppingCart()
+          }
       },
       mounted() {
       this.getInfo()
@@ -197,6 +207,7 @@
     },
       methods:{
         getInfo(){
+            console.log("获取用户信息")
             //获取cookie
             const data ={
                 userID: this.getCookie("userID"),
@@ -206,6 +217,8 @@
                 if(response!=null && response.code===1){
                     this.isLogin = true
                     this.nickname = response.data.nickname
+                }else{
+                    this.isLogin=false
                 }
             })
         },
@@ -215,6 +228,27 @@
             this.isLogin=false
             this.$message.success("退出登录成功")
             this.$router.push("/")
+        },
+        search(){ //搜素功能
+
+        },
+        getShoppingCart(){ //获取购物车信息
+            //获取cookie
+            this.tools.requests(this.G.SERVER+"/api/v1/cart/getCart",{userID: this.getCookie("userID"),token: this.getCookie("token")},"get").then((response)=> {
+                console.log("获取购物车")
+                if (response != null && response.code === 1) {
+                    const data = response.datas
+                    this.shopNum = data.length
+                    let money = 0
+                    //遍历数组，修改数据
+                    for(let index in data){
+                        data[index].img =  data[index].img.split("&&")[0]
+                        money += data[index].price*data[index].count
+                    }
+                    this.totalMoney=money
+                    Vue.set(this,"shops",data)
+                }
+            })
         }
       }
   }
@@ -225,6 +259,35 @@
   }
 </style>
 <style scoped lang="scss">
+    a.shop-link {
+        display: flex;
+    }
+    .shop-title{
+        line-height: 20px;
+        color: #424242;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 12px;
+        width: 87px;
+    }
+    .shop-name:hover{
+        color: #FF6700;
+    }
+    /*购物车浮动效果*/
+    .head_box #head_wrap #head_right #head_car #car_content{
+        display: none;
+    }
+    .head_box #head_wrap #head_right #head_car:hover #car_content{
+        display: block;
+    }
+    .head_box #head_wrap #head_right #head_car:hover{
+        background: #ffffff;
+    }
+    .head_box #head_wrap #head_right #head_car:hover a{
+        color: #FF6700!important;
+    }
     .login-name{
         position: relative;
         .login-nickname {
@@ -242,7 +305,7 @@
             position: absolute;
             display: none;
             top: 40px;
-            z-index: 3;
+            z-index: 16;
             overflow: hidden;
             -webkit-transition: height .3s;
             transition: height .3s;

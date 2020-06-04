@@ -2,7 +2,7 @@
     <div class="app-body">
         <div class="page-main channel-page">
             <div class="block">
-                <el-carousel trigger="click" height="30em" indicator-position="none" arrow="never" direction="horizontal">
+                <el-carousel trigger="click" height="40em" indicator-position="none" arrow="never" direction="horizontal">
                     <el-carousel-item v-for="(item, index) in slideShowList" :key="index">
                         <el-image :src="item" style=""></el-image>
                     </el-carousel-item>
@@ -38,8 +38,8 @@
                                            class="exposure"
                                            onclick="">
                                             <img data-v-29f30695=""
-                                                 :data-src="item.img"
-                                                 :src="item.img"
+                                                 :data-src="item.img.split('&&')[0]"
+                                                 :src="item.img.split('&&')[0]"
                                                  lazy="loaded"
                                                  style="background-color: rgb(245, 245, 245);">
                                         </a>
@@ -58,11 +58,12 @@
                                     </router-link>
                                 </h3>
                                 <p data-v-29f30695=""
-                                   class="desc">{{ item.des }}</p>
+                                   style="width: 20em;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;"
+                                   class="desc">{{ item.other }}</p>
                                 <p data-v-29f30695=""
                                    class="price">
                                     <strong data-v-29f30695="">{{ item.price }}</strong>元<span data-v-29f30695="">起</span>
-                                    <del data-v-29f30695="">{{ item.old_price }}元</del>
+                                    <del data-v-29f30695="" style="text-decoration: line-through;">{{ item.oldPrice }}元</del>
                                 </p>
                             </div>
                         </div>
@@ -81,53 +82,40 @@
         data(){
             return {
                 slideShowList: [
-                    'https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/dd23277ab720424d3eb9bfce439bca2a.jpg?w=5120&h=1240&bg=FCFCFC',
-                    'https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/dd23277ab720424d3eb9bfce439bca2a.jpg?w=5120&h=1240&bg=FCFCFC'
+                    // 'https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/dd23277ab720424d3eb9bfce439bca2a.jpg?w=5120&h=1240&bg=FCFCFC',
+                    // 'https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/dd23277ab720424d3eb9bfce439bca2a.jpg?w=5120&h=1240&bg=FCFCFC'
                 ],
-                commodityTitle: '手机产品',
+                commodityTitle: '产品名字',
                 commodityList: [
-                    {
-                        id: 1, // 商品id
-                        img: '//cdn.cnbj1.fds.api.mi-img.com/mi-mall/4f3a01fbab162952324826197f9ecd76.jpg', // 封面图片
-                        name: '小米10', // 名字
-                        des: '骁龙865/1亿像素相机', // 简略描述
-                        price: '3799', // 现价
-                        old_price: '3999' // 原价
-                    },
-                    {
-                        id: 2, // 商品id
-                        img: '//cdn.cnbj1.fds.api.mi-img.com/mi-mall/90585539f66ccd4356aeac6e7bbb5dad.jpg',
-                        name: ' Redmi K30 Pro',
-                        des: '双模5G，骁龙865，弹出全面屏，6400万高清四摄',
-                        price: '2699',
-                        old_price: '2999'
-                    },
-                    {
-                        id: 3, // 商品id
-                        img: '//cdn.cnbj1.fds.api.mi-img.com/mi-mall/8e0fb5540c32c703813e21894d104567.jpg?w=1212&h=716',
-                        name: '小米10 Pro',
-                        des: '骁龙865 / 50倍变焦 ',
-                        price: '4999',
-                        old_price: '4999'
-                    },
-                    {
-                        id: 4, // 商品id
-                        img: '//cdn.cnbj1.fds.api.mi-img.com/mi-mall/89a7f5ab007583a2cbd8fd759f2262ea.jpg?w=1212&h=716',
-                        name: '腾讯黑鲨游戏手机3 Pro',
-                        des: '骁龙865 / 升降式按键 ',
-                        price: '4699',
-                        old_price: '4999'
-                    },
-                    {
-                        id: 5, // 商品id
-                        img: '//cdn.cnbj1.fds.api.mi-img.com/mi-mall/8a99bc6d6d5743a186950f235cca930e.jpg?w=1212&h=716',
-                        name: 'Redmi Note 8 Pro',
-                        des: '6400万全场景四摄 ',
-                        price: '1099',
-                        old_price: '1399'
-                    }
+                    // {
+                    //     id: 1, // 商品id
+                    //     img: '//cdn.cnbj1.fds.api.mi-img.com/mi-mall/4f3a01fbab162952324826197f9ecd76.jpg', // 封面图片
+                    //     name: '小米10', // 名字
+                    //     description: '骁龙865/1亿像素相机', // 详细描述
+                    //     other: //简略描述
+                    //     price: '3799', // 现价
+                    //     oldPrice: '3999' // 原价
+                    // }
                 ]
             }
+        },
+        mounted() {
+            // 获取某种类型的商品
+            this.tools.requests(this.G.SERVER+"/api/v1/shop/getShopList",{"type": this.$route.params.id},"get").then((res)=>{
+                if(res.code != 1){ // 获取失败
+                    this.$message({
+                        showClose: true,
+                        message: '获取失败！',
+                        type: 'error'
+                    });
+                }else {
+                    this.commodityList = res.datas
+                    this.slideShowList = res.data.split("&&")
+                    if(this.slideShowList.length < 2){
+                        this.slideShowList.push(this.slideShowList[0])
+                    }
+                }
+            })
         }
     }
 </script>
@@ -285,7 +273,7 @@
     }
     .channel-product-two4 .product-cell[data-v-29f30695] {
         border-radius: 2%;
-        margin: 1em;
+        /*margin: 1em;*/
         position: relative;
         height: 100%;
         background: #fff;
@@ -304,7 +292,7 @@
         transition: all .2s linear;
     }
     .span10 {
-        width: 560px;
+        width: 606px;
     }
     .channel-product-two4 .figure[data-v-29f30695] {
         width: 100%;
@@ -312,7 +300,7 @@
     }
     .channel-product-two4 .figure img[data-v-29f30695] {
         display: block;
-        width: 100%;
+        width: auto;
         height: 100%;
     }
     .channel-product-two4 .title[data-v-29f30695] {

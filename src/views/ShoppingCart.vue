@@ -85,7 +85,6 @@
         },
         methods: {
             handleSelectionChange(val) { // 当有选中的时候就会触发这个函数
-                console.log("选中", val)
                 var _this = this
                 this.multipleSelection = val;
                 _this.totalPrice = 0;
@@ -99,7 +98,6 @@
                 }
             },
             handleClickDelete(scope) { // 删除商品
-                console.log("删除操作", scope)
                 this.$confirm('确认删除么？', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -130,7 +128,6 @@
                 });
             },
             handleChangeNum(scope){ // 修改购物车的商品数量
-                console.log("改变数量", scope.$index)
                 let index = scope.$index
                 this.tools.requests(this.G.SERVER+"/api/v1/cart/changeCartNum",{ // 修改商品的数量
                     "shopID": scope.row.shopId,
@@ -151,7 +148,6 @@
                 if(this.multipleSelection > 0){ // 有选中的商品
                     this.totalPrice = 0;
                     this.tableData.forEach((item) => { // 修改总的价格
-                        console.log(item)
                         this.totalPrice = item.count * item.price + this.totalPrice
                     })
                 }

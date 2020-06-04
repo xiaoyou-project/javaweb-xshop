@@ -16,6 +16,15 @@
                         <div class="menu-box">
                             <h3 class="title">个人中心</h3>
                             <ul class="list">
+                                <li><a class="side-link active" href="javascript:void(0)">我的个人中心</a></li>
+                                <li><a class="side-link" href="javascript:void(0)">消息通知</a></li>
+                                <li><a class="side-link" href="javascript:void(0)">收货地址</a></li>
+                                <li><a class="side-link" href="javascript:void(0)">现金账户</a></li>
+                            </ul>
+                        </div>
+                        <div class="menu-box">
+                            <h3 class="title">售后服务</h3>
+                            <ul class="list">
                                 <li><a class="side-link" href="javascript:void(0)">服务记录</a></li>
                                 <li><a class="side-link" href="javascript:void(0)">申请服务</a></li>
                                 <li><a class="side-link" href="javascript:void(0)">收货地址</a></li>
@@ -26,15 +35,6 @@
                             <h3 class="title">账户管理</h3>
                             <ul class="list">
                                 <li><a class="side-link" href="javascript:void(0)">个人信息</a></li>
-                                <li><a class="side-link" href="javascript:void(0)">申请服务</a></li>
-                                <li><a class="side-link" href="javascript:void(0)">收货地址</a></li>
-                                <li><a class="side-link" href="javascript:void(0)">领取快递报销</a></li>
-                            </ul>
-                        </div>
-                        <div class="menu-box">
-                            <h3 class="title">售后服务</h3>
-                            <ul class="list">
-                                <li><a class="side-link" href="javascript:void(0)">我的个人中心</a></li>
                                 <li><a @click="changePasswordDialog=true" class="side-link" href="javascript:void(0)">修改密码</a></li>
                             </ul>
                         </div>
@@ -255,6 +255,9 @@
 <style scoped>
     .side-link:hover{
         color: #FF6700;
+    }
+    a.side-link.active {
+        color: #ff6700!important;
     }
     ul.info-list.clearfix li a {
         display: flex;
