@@ -1,27 +1,23 @@
 <template>
     <div class="mainDiv">
-        <el-container>
-            <el-main>
-                <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="auto" class="demo-ruleForm">
-                    <el-form-item label="昵称" prop="nickname">
-                        <el-input type="text" v-model="ruleForm.nickname" autocomplete="off" ></el-input>
-                    </el-form-item>
-                    <el-form-item label="账号" prop="username">
-                        <el-input type="text" v-model="ruleForm.username" autocomplete="off" ></el-input>
-                    </el-form-item>
-                    <el-form-item label="密码" prop="password">
-                        <el-input type="password" v-model="ruleForm.password" autocomplete="off"></el-input>
-                    </el-form-item>
-                    <el-form-item label="确认密码" prop="checkPass">
-                        <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" size="medium" round @click="submitForm('ruleForm')" style="width: 15em;">注册</el-button>
-                    </el-form-item>
-                </el-form>
-                <el-link type="info"><router-link to="/login">已有账号</router-link></el-link>
-            </el-main>
-        </el-container>
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="auto" class="demo-ruleForm">
+            <el-form-item label="昵称" prop="nickname">
+                <el-input type="text" v-model="ruleForm.nickname" autocomplete="off" ></el-input>
+            </el-form-item>
+            <el-form-item label="账号" prop="username">
+                <el-input type="text" v-model="ruleForm.username" autocomplete="off" ></el-input>
+            </el-form-item>
+            <el-form-item label="密码" prop="password">
+                <el-input type="password" v-model="ruleForm.password" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="确认密码" prop="checkPass">
+                <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <div class="register-button" @click="submitForm('ruleForm')">注册</div>
+                <div class="login-side"><router-link to="/login">已有账号</router-link>|<router-link to="\">回到主页</router-link></div>
+            </el-form-item>
+        </el-form>
     </div>
 </template>
 
@@ -95,16 +91,33 @@
 </script>
 
 <style scoped>
+    .register-button {
+        background-color: #ff6700;
+        width: 100%;
+        height: 50px;
+        line-height: 50px;
+        display: block;
+        margin-bottom: 14px;
+        text-align: center;
+        font-size: 14px;
+        color: #fff;
+        cursor: pointer;
+    }
     .mainDiv {
-        width: 50%;
+        width: 400px;
         margin: 3em auto;
         padding: 1em;
     }
-    .el-main {
-        width: 50%;
-        margin: 1em auto;
-        border: 1px solid #eee;
-        border-radius: 2px;
-        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    .login-side a {
+        color: #999;
+        padding: 0 5px;
+    }
+    .login-side a:hover{
+        color: #FF6700;
+    }
+    .login-side {
+        color: #999;
+        margin-top: -15px;
+        margin-left: 184px;
     }
 </style>

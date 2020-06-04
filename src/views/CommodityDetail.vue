@@ -87,6 +87,7 @@
             addCommodity(){
                 if(!this.isLogin){
                     this.$message.error("请先登录!")
+                    return
                 }
                 // 加入购物车
                 this.tools.requests(this.G.SERVER+"/api/v1/cart/addCart",{

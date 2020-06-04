@@ -1,21 +1,17 @@
 <template>
     <div class="mainDiv">
-        <el-container>
-            <el-main>
-             <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="auto" class="demo-ruleForm">
-                    <el-form-item label="账号" prop="username">
-                        <el-input type="text" v-model="ruleForm.username" autocomplete="off" ></el-input>
-                    </el-form-item>
-                    <el-form-item label="密码" prop="password">
-                        <el-input type="password" v-model="ruleForm.password" autocomplete="off" ></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                        <div class="login-button" @click="submitForm('ruleForm')">登录</div>
-                    </el-form-item>
-                </el-form>
-                <el-link type="info"><router-link to="/register">注册账号</router-link></el-link>
-            </el-main>
-        </el-container>
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="auto" class="demo-ruleForm">
+            <el-form-item label="账号" prop="username">
+                <el-input type="text" v-model="ruleForm.username" autocomplete="off" ></el-input>
+            </el-form-item>
+            <el-form-item label="密码" prop="password">
+                <el-input type="password" v-model="ruleForm.password" autocomplete="off" ></el-input>
+            </el-form-item>
+            <el-form-item>
+                <div class="login-button" @click="submitForm('ruleForm')">登录</div>
+                <div class="login-side"><router-link to="/register">立即注册</router-link>|<a href="javascript:void(0)">忘记密码？</a></div>
+            </el-form-item>
+        </el-form>
     </div>
 </template>
 
@@ -87,7 +83,7 @@
         cursor: pointer;
     }
     .mainDiv {
-        width: 50%;
+        width: 400px;
         margin: 3em auto;
         padding: 1em;
     }
@@ -97,5 +93,17 @@
         border: 1px solid #eee;
         border-radius: 2px;
         box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    }
+    .login-side a {
+        color: #999;
+        padding: 0 5px;
+    }
+    .login-side a:hover{
+        color: #FF6700;
+    }
+    .login-side {
+        color: #999;
+        margin-top: -15px;
+        margin-left: 199px;
     }
 </style>
