@@ -15,22 +15,22 @@
                             <a class="goods-order-item" href="javascript: void(0);">销量</a>
                         </li>
                         <li class="">
-                            <a class="goods-order-item" href="javascript: void(0);">价格 <i class="iconfont"></i> </a>
+                            <a class="goods-order-item" href="javascript: void(0);">价格</a>
                         </li>
                     </ul>
                 </div>
                 <div class="goods-list-box">
                     <div class="goods-list clearfix" id="J_goodsList">
-                        <div class="goods-item">
-                            <div class="figure figure-img">
-                                <a target="_blank" href="https://www.mi.com/buy?product_id=1175000272&amp;cfrom=search">
-                                    <img src="http://i8.mifile.cn/b2c-mimall-media/7382a91d1f2611ce859bd6fd8578c994.jpg" width="200" height="200" alt="">
-                                </a>
-                            </div>
-                            <h2 class="title">
-                                <a target="_blank" href="https://www.mi.com/buy?product_id=1175000272&amp;cfrom=search">米家电磁炉</a>
-                            </h2>
-                            <p class="price">259元  <del>299元 </del></p>
+                        <div v-for="(item,index) in result" :key="index" class="goods-item">
+                            <router-link :to="'/commodityDetail/'+item.id">
+                                <div class="figure figure-img">
+                                    <img :src="item.img" width="200" height="200">
+                                </div>
+                                <h2 class="title">
+                                    <a target="_blank" href="javascript:void(0)">{{item.name}}</a>
+                                </h2>
+                                <p class="price">{{item.price}}元 <del>{{item.oldPrice}}元 </del></p>
+                            </router-link>
                         </div>
                     </div>
                 </div>
@@ -42,8 +42,38 @@
 </template>
 
 <script>
+    import Vue from 'vue'
     export default {
-        name: "Info"
+        name: "Info",
+        data(){
+            return{
+                result:null
+            }
+        },
+        watch:{
+            $route(){
+                this.search()
+            }
+        },
+        mounted() {
+            this.search()
+        },
+        methods:{
+            search(){
+                console.log("搜索")
+                let key = this.$route.params.key
+                this.tools.requests(this.G.SERVER+"/api/v1/shop/search",{key:key},"get").then((response)=> {
+                    if (response != null && response.code === 1) {
+                        const data =response.datas
+                        //遍历数组，修改数据
+                        for(let index in data){
+                            data[index].img =  data[index].img.split("&&")[0]
+                        }
+                        Vue.set(this,"result",data)
+                    }
+                })
+            }
+        }
     }
 </script>
 
@@ -130,16 +160,12 @@
         height: 200px;
     }
     .goods-item .title {
-        margin: 0 auto;
-        width: 230px;
-    }
-    .goods-item .title {
         font-size: 14px;
         font-weight: 400;
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
-        _zoom: 1;
+        margin: 12px 0;
     }
     .goods-item .title a {
         color: #424242;
@@ -150,6 +176,7 @@
     }
     .goods-item .price del {
         color: #b0b0b0;
+        text-decoration: line-through;
     }
     a {
         cursor: pointer;

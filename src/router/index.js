@@ -15,7 +15,7 @@ Vue.use(VueRouter)
       name: 'Me',
       component: ()=>import('../views/Me')
     },
-    {path: '/search', name: 'Search', component: ()=>import('../views/Search')},
+    {path: '/search/:key', name: 'Search', component: ()=>import('../views/Search')},
     {path: '/register', name: 'register', component: ()=>import('../views/RegisterPage')},
     {path: '/commodityDetail/:id', name: 'commodityDetail', component: ()=>import('../views/CommodityDetail')},
     {path: '/shoppingCart', name: 'shoppingCart', component: ()=>import('../views/ShoppingCart')},

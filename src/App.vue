@@ -58,7 +58,7 @@
     <div id="main_head_box">
       <div id="menu_wrap">
           <div id="menu_logo">
-              <img style="width:45px;height:45px" src="/img/logo.png">
+              <router-link to="/"><img style="width:45px;height:45px" src="/img/logo.png"></router-link>
               <img class="img-top-ad" src="/img/top.gif">
           </div>
           <div id="menu_nav">
@@ -207,7 +207,6 @@
     },
       methods:{
         getInfo(){
-            console.log("获取用户信息")
             //获取cookie
             const data ={
                 userID: this.getCookie("userID"),
@@ -230,12 +229,12 @@
             this.$router.push("/")
         },
         search(){ //搜素功能
-
+            const path = `/search/${this.key}`
+            if (this.$route.path !== path) this.$router.push(path)
         },
         getShoppingCart(){ //获取购物车信息
             //获取cookie
             this.tools.requests(this.G.SERVER+"/api/v1/cart/getCart",{userID: this.getCookie("userID"),token: this.getCookie("token")},"get").then((response)=> {
-                console.log("获取购物车")
                 if (response != null && response.code === 1) {
                     const data = response.datas
                     this.shopNum = data.length

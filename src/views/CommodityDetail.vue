@@ -1,33 +1,33 @@
 <template>
     <div class="mainDiv">
-        <el-container>
-            <el-aside style="width: 45em; margin-top: -5em;">
-                <el-carousel trigger="click" :interval="3000" height="40em">
+        <el-container style="margin-top: 3em;">
+            <el-aside style="width: 400px;">
+                <el-carousel trigger="click" :interval="3000">
                     <el-carousel-item v-for="(item, index) in imgList" :key="index">
                         <el-image :src="item" style=""></el-image>
                     </el-carousel-item>
                 </el-carousel>
             </el-aside>
-            <el-container style="text-align: left;">
+            <div style="text-align: left; margin-left: 3em;">
                 <el-header style="width: 40em;">
-                    <h2>{{name}}</h2>
+                    <h2 style="font-size: 2em; font-weight: bold;">{{name}}</h2>
                 </el-header>
                 <el-main style="width: 40em;">
-                    <div v-html="commodityReferral">
+                    <div v-html="commodityReferral" style="line-height: 1.5em;font-weight:450">
                     </div>
                     <div style="color: red; font-size: 1.5em;margin-top: 1em;">
                         {{ price }} 元
                     </div>
-                    <hr style="border: 1px solid #eee;"/>
-                    <div style="padding: 2em;border: 1px solid #eee;background: #eeeeee;">
+                    <el-divider></el-divider>
+                    <div style="padding: 2em;border: 1px solid #eee;background: #eeeeee; margin-top: 3em;font-size: 1.2em;">
                         <i class="el-icon-location-information"></i>
                         <span> 北京 北京市 海淀区 清河街道 </span>
                         <el-link type="primary"><router-link to=""> 修改地址</router-link></el-link>
                     </div>
-                    <div style="padding: 2em;border: 1px solid #eee;background: #eeeeee; margin-top: 3em;">
+                    <div style="padding: 2em;border: 1px solid #eee;background: #eeeeee; margin-top: 1.5em;">
                         <div style="font-size: 1em;">
-                            <span>{{ commoditySimpleDetail + other }} </span>
-                            <span style="position: absolute;right: 50em;">
+                            <span style="color: black;">{{ commoditySimpleDetail + other }} </span>
+                            <span style="position: absolute;margin-top: 4em;color:#616161;">
                                 <span> {{price}}元 </span>
                                 <span style="text-decoration: line-through;"> {{old_price}}元 </span>
                             </span>
@@ -36,11 +36,16 @@
                             总共：{{ price }} 元
                         </div>
                     </div>
-                    <div style="margin-top: 1em;text-align: center">
-                        <el-button type="primary" @click="addCommodity" plain style="width: 10em;height: 3em; font-size: 1.5em;">加入购物车</el-button>
+                    <div class="btn-box">
+                        <div class="sale-btn">
+                            <a @click="addCommodity" class="btn btn-primary">加入购物车</a>
+                        </div>
+                        <div class="favorite-btn">
+                            <a class="btn-gray btn-like"><v-icon style="margin-right: 2px" name="heart"/>喜欢</a>
+                        </div>
                     </div>
                 </el-main>
-            </el-container>
+            </div>
         </el-container>
     </div>
 </template>
@@ -78,9 +83,6 @@
                     }else {
                         this.$alert('加入购物车成功！！！', '提示', {
                             confirmButtonText: '确定',
-                            callback: () => {
-                                this.$router.push({path: '/shoppingCart'})
-                            }
                         });
                     }
                 })
@@ -109,7 +111,81 @@
     }
 </script>
 
+<style>
+   .mainDiv .el-container{
+        display: flex;
+        justify-content: center;
+    }
+</style>
+
+
 <style scoped>
+    .btn-box{
+        margin: 10px 0 20px 0;
+    }
+    .sale-btn{
+        display: inline-block;
+        margin-right: 10px;
+    }
+    .sale-btn .btn{
+        width: 298px;
+        height: 52px;
+        line-height: 52px;
+        font-size: 16px;
+    }
+    .btn-primary {
+        background: #ff6700;
+        border-color: #ff6700;
+        color: #fff;
+    }
+    .favorite-btn{
+        display: inline-block;
+        vertical-align: top;
+    }
+    .btn {
+        display: inline-block;
+        width: 158px;
+        height: 38px;
+        padding: 0;
+        margin: 0;
+        font-size: 14px;
+        line-height: 38px;
+        text-align: center;
+        color: #ffffff;
+        cursor: pointer;
+        -webkit-transition: all .4s;
+        transition: all .4s;
+    }
+    .btn-like{
+        width: 140px;
+        height: 52px;
+        line-height: 52px;
+        padding: 0;
+        margin: 0;
+        border: 1px solid #b0b0b0;
+        text-align: center;
+        cursor: pointer;
+        -webkit-transition: all .4s;
+        transition: all .4s;
+        font-size: 16px;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .btn-gray {
+        background: #b0b0b0;
+        border-color: #b0b0b0;
+        color: #fff;
+    }
+    .sale-btn:hover a{
+        background-color: #f25807;
+        border-color: #f25807;
+        color: #fff;
+    }
+
+
+
     .el-aside {
         width: 45em;
         height: 40em;

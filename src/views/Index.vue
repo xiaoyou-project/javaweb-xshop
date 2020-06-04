@@ -77,13 +77,13 @@
                                         7x4iTALjhcgVQSIl3v87w5vePcY/AQYAFYR6skFSqBUAAAAASUVORK5CYII=" alt="小米闪购">
                                 <div class="desc">距离结束还有</div>
                                 <div class="countdown clearfix">
-                                    <span>01</span><i>:</i><span>57</span><i>:</i><span>18</span>
+                                    <span>06</span><i>:</i><span>{{minute}}</span><i>:</i><span>{{second}}</span>
                                 </div>
                             </div>
                             <div id="J_flashSaleList" class="span16 flashsale-list swiper-container swiper-no-swiping swiper-container-initialized swiper-container-horizontal">
                                 <ul class="swiper-wrapper" style="transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;">
                                     <li v-for="(item,index) in fastShopList" :key="index" class="swiper-slide rainbow-item-103" style="width: 234px; margin-right: 14px;">
-                                        <router-link :to="item.url" target="_blank">
+                                        <router-link :to="item.url">
                                             <div class="content">
                                                 <div class="thumb">
                                                     <img :alt="item.name" width="160" height="160" :src="item.img">
@@ -185,10 +185,20 @@
                 functionImg,
                 functionImgSide,
                 fastShopList,
-                phoneShop
+                phoneShop,
+                minute:60,
+                second:0
             }
         },
         mounted() {
+            //设置倒计时
+            let that = this
+            let total = 3600
+            setInterval( ()=>{
+                total--;
+                that.minute = Math.floor(total/60)
+                that.second = Math.floor(total%60)
+            },1000)
             // 获取所有商品
             this.tools.requests(this.G.SERVER+"/api/v1/shop/getAllShop",{},"get").then((response)=>{
                 if(response!=null && response.code===1){

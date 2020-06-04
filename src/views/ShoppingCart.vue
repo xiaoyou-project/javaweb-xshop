@@ -16,7 +16,7 @@
                     width="350"
                     align="center">
                 <template slot-scope="scope">
-                    <router-link to="/commodityDetail">
+                    <router-link :to="'/commodityDetail/' + scope.row.shopId">
                         <el-image :src="scope.row.img.split('&&')[0]" style="width: 5em;"></el-image>
                         <div>{{ scope.row.detail }}</div>
                     </router-link>
@@ -57,10 +57,10 @@
             </el-table-column>
         </el-table>
         <div style="padding: 2em;border: 1px solid #eee;background: #eeeeee; margin-top: 3em;">
-            <router-link to="/">继续购物</router-link> |
-            <span>共 {{tableData.length}} 件商品，已选择 {{multipleSelection.length}} 件</span>
-            合计：{{ totalPrice }} 元
-            <el-button type="primary" plain style="width: 10em;height: 3em; font-size: 1.5em;" :disabled="show">购买</el-button>
+            <router-link to="/" style="font-size: 2em;">继续购物</router-link> |
+            <span>共 <span style="font-size: 2em;">{{tableData.length}}</span> 件商品，已选择 <span style="font-size: 2em;">{{multipleSelection.length}}</span> 件</span>
+            合计：<span style="font-size: 2em; color: #ff6700;">{{ totalPrice }}</span> 元
+            <el-button type="danger" plain style="width: 15em;height: 3em; font-size: 1.5em;margin-left: 15em;" :disabled="show">结算</el-button>
         </div>
     </div>
 </template>
@@ -88,7 +88,7 @@
                 var _this = this
                 this.multipleSelection = val;
                 _this.totalPrice = 0;
-                val.forEach(function (item) {
+                val.forEach(function (item) { // 计算价格
                     _this.totalPrice = item.count * item.price + _this.totalPrice
                 })
                 if(_this.multipleSelection.length === 0){
@@ -145,10 +145,10 @@
                         // 修改商品数量成功
                     }
                 })
-                if(this.multipleSelection > 0){ // 有选中的商品
+                if(this.multipleSelection.length > 0){ // 有选中的商品
                     this.totalPrice = 0;
-                    this.tableData.forEach((item) => { // 修改总的价格
-                        this.totalPrice = item.count * item.price + this.totalPrice
+                    this.multipleSelection.forEach((item) => { // 修改总的价格
+                        this.totalPrice = parseInt(item.count * item.price) + this.totalPrice
                     })
                 }
             }
