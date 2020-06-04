@@ -214,6 +214,7 @@
             this.delCookie('token')
             this.isLogin=false
             this.$message.success("退出登录成功")
+            this.$router.push("/")
         }
       }
   }

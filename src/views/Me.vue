@@ -228,11 +228,23 @@
                 //判断两次用户输入是否相同
                 if(this.passwordInfo.newPassword!==this.passwordInfo.repeatPassword){
                     this.$message.error("两次密码输入不相同")
+                    return
+                }
+                const data={
+                    ID:this.getCookie("userID"),
+                    token: this.getCookie("token"),
+                    oldPassword:this.passwordInfo.password,
+                    password:this.passwordInfo.newPassword
                 }
                 //发送请求重置密码
-                this.tools.requests(this.G.SERVER+"/api/v1/user/changeInfo",{},"post").then((response)=> {
+                this.tools.requests(this.G.SERVER+"/api/v1/user/changePassword",data,"post").then((response)=> {
                     if (response != null && response.code === 1) {
-                        //
+                        this.delCookie('userID')
+                        this.delCookie('token')
+                        this.$message.success("密码重置成功，请重新登录")
+                        this.$router.push("/login")
+                    }else{
+                        this.$message.error(response.msg)
                     }
                 })
             }
