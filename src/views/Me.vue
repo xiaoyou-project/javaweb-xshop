@@ -138,7 +138,7 @@
                 width="250px">
             <el-upload
                     class="avatar-uploader"
-                    action="https://jsonplaceholder.typicode.com/posts/"
+                    :action="uploadUrl"
                     :show-file-list="false"
                     :on-success="handleAvatarSuccess"
                     :before-upload="beforeAvatarUpload">
@@ -174,7 +174,8 @@
                     repeatPassword:""
                 },
                 changeAvatar:false,
-                imageUrl: ''
+                imageUrl: '',
+                uploadUrl:this.G.SERVER+"/api/v1/user/uploadAvatar"
             }
         },
         mounted() {
