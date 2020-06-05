@@ -15,7 +15,7 @@
             </el-form-item>
             <el-form-item>
                 <div class="register-button" @click="submitForm('ruleForm')">注册</div>
-                <div class="login-side"><router-link to="/login">已有账号</router-link>|<router-link to="\">回到主页</router-link></div>
+                <div class="login-side"><router-link to="/login">已有账号</router-link>|<router-link to="/">回到主页</router-link></div>
             </el-form-item>
         </el-form>
     </div>

@@ -49,7 +49,10 @@
                                         <h2 class="username">{{info.nickname}}</h2>
                                         <p class="tip">{{info.sign}}</p>
                                         <a href="javascript:void(0)" @click="changeInfoDialog=true" class="link">修改个人信息 &gt;</a>
-                                        <img :src="info.avatar" width="150" height="150" alt class="avatar">
+                                        <div class="img-upload">
+                                            <div @click="changeAvatar=true" title="上传头像" class="upload-icon"><v-icon scale="2.0" style="color:#ffffff" name="cloud-upload-alt"/></div>
+                                            <img :src="info.avatar" width="150" height="150" alt class="avatar">
+                                        </div>
                                     </div>
                                     <div class="user-actions">
                                         <ul class="action-list">
@@ -129,6 +132,24 @@
             <el-button type="primary" @click="changePassword">修改密码</el-button>
           </span>
         </el-dialog>
+        <el-dialog
+                title="修改头像"
+                :visible.sync="changeAvatar"
+                width="250px">
+            <el-upload
+                    class="avatar-uploader"
+                    action="https://jsonplaceholder.typicode.com/posts/"
+                    :show-file-list="false"
+                    :on-success="handleAvatarSuccess"
+                    :before-upload="beforeAvatarUpload">
+                <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="changeAvatar = false">取 消</el-button>
+                <el-button type="primary" @click="updateImg">更新头像</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -151,7 +172,9 @@
                     password:"",
                     newPassword:"",
                     repeatPassword:""
-                }
+                },
+                changeAvatar:false,
+                imageUrl: ''
             }
         },
         mounted() {
@@ -188,7 +211,7 @@
                     }
                 })
             },
-            changePassword(){ //修改用户密码
+            changePassword(){
                 //判断两次用户输入是否相同
                 if(this.passwordInfo.newPassword!==this.passwordInfo.repeatPassword){
                     this.$message.error("两次密码输入不相同")
@@ -211,12 +234,72 @@
                         this.$message.error(response.msg)
                     }
                 })
+            },
+            handleAvatarSuccess(res, file) {
+                this.imageUrl = URL.createObjectURL(file.raw);
+            },
+            beforeAvatarUpload(file) {
+                const isLt2M = file.size / 1024 / 1024 < 5;
+                if (!isLt2M) {
+                    this.$message.error('上传头像图片大小不能超过 5MB!');
+                }
+                return isLt2M;
+            },
+            updateImg(){
+
             }
         }
     }
 </script>
 
+<style lang="scss">
+    .el-dialog__body {
+        display: flex;
+        justify-content: center;
+    }
+    .avatar-uploader .el-upload {
+        border: 1px dashed #d9d9d9;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        .avatar-uploader-icon {
+            font-size: 28px;
+            color: #8c939d;
+            width: 178px;
+            height: 178px;
+            line-height: 178px;
+            text-align: center;
+        }
+        .avatar {
+            width: 178px;
+            height: 178px;
+            display: block;
+        }
+    }
+</style>
+
 <style scoped>
+    /*上传头像*/
+    .img-upload:hover .upload-icon{
+        display: flex;
+    }
+    .upload-icon {
+        position: absolute;
+        left: 0;
+        top: 0;
+        padding: 4px;
+        border-radius: 150px;
+        z-index: 50;
+        background-color: rgba(0,0,0,.3);
+        width: 150px;
+        height: 150px;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+
     .side-link:hover{
         color: #FF6700;
     }
