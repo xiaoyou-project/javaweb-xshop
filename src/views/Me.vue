@@ -51,7 +51,7 @@
                                         <a href="javascript:void(0)" @click="changeInfoDialog=true" class="link">修改个人信息 &gt;</a>
                                         <div class="img-upload">
                                             <div @click="changeAvatar=true" title="上传头像" class="upload-icon"><v-icon scale="2.0" style="color:#ffffff" name="cloud-upload-alt"/></div>
-                                            <img :src="info.avatar" width="150" height="150" alt class="avatar">
+                                            <img :src="server+info.avatar+'.jpg'" width="150" height="150" alt class="avatar">
                                         </div>
                                     </div>
                                     <div class="user-actions">
@@ -139,16 +139,14 @@
             <el-upload
                     class="avatar-uploader"
                     :action="uploadUrl"
+                    :data="uploadData"
                     :show-file-list="false"
+                    name="image"
                     :on-success="handleAvatarSuccess"
                     :before-upload="beforeAvatarUpload">
                 <img v-if="imageUrl" :src="imageUrl" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="changeAvatar = false">取 消</el-button>
-                <el-button type="primary" @click="updateImg">更新头像</el-button>
-            </span>
         </el-dialog>
     </div>
 </template>
@@ -157,6 +155,10 @@
     export default {
         name: "Me",
         data(){
+            const uploadData={
+                userID:this.getCookie("userID"),
+                token:this.getCookie("token")
+            }
             return{
                 info: {
                     username:"",
@@ -175,7 +177,9 @@
                 },
                 changeAvatar:false,
                 imageUrl: '',
-                uploadUrl:this.G.SERVER+"/api/v1/user/uploadAvatar"
+                uploadUrl:this.G.SERVER+"/api/v1/user/addAvatar",
+                uploadData,
+                server: this.G.SERVER + "/img/"
             }
         },
         mounted() {
@@ -236,8 +240,10 @@
                     }
                 })
             },
-            handleAvatarSuccess(res, file) {
-                this.imageUrl = URL.createObjectURL(file.raw);
+            handleAvatarSuccess() {
+                this.$message.success("上传成功")
+                this.changeAvatar=false
+                this.getUserInfo()
             },
             beforeAvatarUpload(file) {
                 const isLt2M = file.size / 1024 / 1024 < 5;
